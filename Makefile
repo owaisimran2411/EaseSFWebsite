@@ -1,6 +1,7 @@
 fileName=$(fileName)
 collectionName=$(collectionName)
 routeName=$(routeName)
+commitMessage=$(commitMessage)
 
 create-data-file:
 	touch ./data/$(fileName)
@@ -21,7 +22,7 @@ data-file: append-in-dataindexjs
 	git add ./config/mongoCollections.js
 	git status
 	git commit -m "Create Data File of $(collectionName) using Make"
-	git push origin master
+	git push origin main
 
 create-route-file:
 	touch ./routes/$(fileName)
@@ -37,4 +38,9 @@ route-file: append-in-routesindexjs
 	git add ./routes/$(fileName)
 	git status
 	git commit -m "Create Route File of $(fileName) using Make"
-	git push origin master
+	git push origin main
+
+commit:
+	git add .
+	git commit -m "$(commitMessage)"
+	git push origin main
