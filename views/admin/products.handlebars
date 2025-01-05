@@ -1,0 +1,27 @@
+<h1 class="text-center">Product Dashboard</h1>
+<div class="mb-4">
+    <a href="/admin/product/add-product" class="btn btn-success btn-lg rounded-pill  add-product-button">
+        <i class="bi bi-plus-lg"></i> Add New Product
+    </a>
+</div>
+<div class="row">
+    {{#each products}}
+        <div class="col-md-3 mb-4">
+            <div class="card h-100">
+                <img src="{{this.coverImage}}" class="card-img-top" alt="Product Cover">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">{{this.title}}</h5>
+                    <p class="card-text flex-grow-1">{{this.description}}</p>
+                    <div class="mt-auto">
+                        <p><b>Price:</b> ${{this.price}}</p>
+                        <div class="d-flex justify-content-between">
+                            <a href="/edit/{{this.id}}" class="btn btn-primary">Edit</a>
+                            <a href="/delete/{{this.id}}" class="btn btn-danger">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    {{/each}}
+</div>

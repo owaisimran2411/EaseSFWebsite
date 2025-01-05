@@ -1,0 +1,28 @@
+body {
+    padding: 20px;
+}
+
+.card-text {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* Show only the first 3 lines */
+    -webkit-box-orient: vertical;
+}
+
+.card {
+    height: 100%;
+}
+
+.card-img-top {
+    height: 200px; /* Adjust as needed */
+    object-fit: cover; /* Keep aspect ratio */
+}
+
+.add-product-button {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.75rem 1.5rem; /* Adjust as needed */
+}
+.add-product-button i {
+  margin-right: 0.5rem;
+}
