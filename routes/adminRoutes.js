@@ -112,8 +112,6 @@ router.route("/products/add-product/step3")
             coverImage = `/public/uploads/${req.file.filename}`;
             res.setHeader('x-filename', coverImage);
         }
-        console.log(coverImage);
-        console.log(req.body);
         return res.send(`
             <script>
                 console.log(req.headers.get('x-filename'));
@@ -131,12 +129,6 @@ router.route("/products/add-product/step4")
         if (req.files) {
             productImages = req.files.map(file => `/public/uploads/${file.filename}`);
         }
-    //    const newProduct = {
-    //        ...req.body,
-    //         id: products.length + 1,
-    //        productImages: productImages
-    //     }
-    //     products.push(newProduct);
         
         const productName = req.body.name;
         const productPrice = req.body.price;
@@ -145,9 +137,7 @@ router.route("/products/add-product/step4")
         const productDescription = req.body.description;
         const productHashtags = req.body.hashtags;
         const productCoverImage = req.body.coverImage;
-        
 
-        // console.log(productsObject);
         const newProduct = await productData.createProduct(productName, productPrice, productCategory, productQuantity, productDescription, productHashtags, productCoverImage, productImages);
         return res.status(200).send(`
             <script>
