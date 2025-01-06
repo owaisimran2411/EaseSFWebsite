@@ -13,4 +13,4 @@ const getCollectionFn = (collection) => {
 	};
 };
 
-/* Now, you can list your collections here: */
+/* Now, you can list your collections here: */export const product = getCollectionFn("product");
