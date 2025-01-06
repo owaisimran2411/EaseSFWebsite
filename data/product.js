@@ -6,8 +6,9 @@ const createProduct = async (productName, productPrice, productCategory, product
     
     try {
         const productCollection = await product();
+        const productID = await helperMethods.generateObjectID();
         const newProduct = {
-            _id: await helperMethods.generateObjectID(),
+            _id: productID.toString(),
             name: productName,
             price: productPrice,
             category: productCategory,

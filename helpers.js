@@ -39,6 +39,14 @@ const primitiveTypeValidation = (arg, argName, primitiveType) => {
 			}
 			arg = xss(arg);
 			break;
+		case "number":
+			if (typeof arg !== "number") {
+				throw `${
+					argName || "argument"
+				} is not a number`;
+			}
+			break;
+		
 		case "object":
 			if (typeof arg !== "object" || Object.keys(arg).length === 0) {
 				throw `${
