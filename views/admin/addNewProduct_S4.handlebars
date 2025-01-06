@@ -1,0 +1,56 @@
+<div class="container-fluid">
+    <h1>Add New Product - Step 4</h1>
+    
+    <form method="post" enctype="multipart/form-data" id="step4">
+        <div class="mb-3">
+            <label for="productImages" class="form-label">Product Images</label>
+            <input type="file" 
+                   class="form-control" 
+                   id="productImages" 
+                   name="productImages" 
+                   accept="image/*" 
+                   multiple>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+    <script>
+        const productData = JSON.parse(sessionStorage.getItem('productData') || '{}');
+        
+        if (productData.productImages) {
+            const productImagesInput = document.getElementById('productImages');
+            productImagesInput.removeAttribute('required');
+        }
+
+        document.getElementById('step4').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const productData = JSON.parse(sessionStorage.getItem('productData') || '{}');
+            const formData = new FormData();
+            
+            Object.entries(productData).forEach(([key, value]) => {
+                formData.append(key, value);
+            });
+
+            const productImages = document.getElementById('productImages').files;
+            for (let i = 0; i < productImages.length; i++) {
+                formData.append('productImages', productImages[i]);
+            }
+
+            try {
+                const response = await fetch('/admin/products/add-product/step4', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    sessionStorage.removeItem('productData');
+                    window.location.href = '/admin/products';
+                } else {
+                    console.error('Error during fetch:', response.statusText);
+                }
+            } catch (error) {
+                console.error('Error during fetch:', error);
+            }
+        });
+    </script>
+</div>

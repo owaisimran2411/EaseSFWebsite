@@ -1,0 +1,30 @@
+<div class="container-fluid">
+    <h1>Add New Product - Step 1</h1>
+    <form method="post">
+        <div class="mb-3">
+            <label for="name" class="form-label">Product Name</label>
+            <input type="text" class="form-control" id="name" name="name" required>
+        </div>
+        
+        <div class="mb-3">
+            <label for="price" class="form-label">Price</label>
+            <input type="number" class="form-control" id="price" name="price" step="0.01" min="0.01" required>
+        </div>
+        
+        <div class="mb-3">
+            <label for="category" class="form-label">Category</label>
+            <select class="form-select" id="category" name="category" required>
+                {{#each categories}}
+                    <option value="{{this}}">{{this}}</option>
+                {{/each}}
+            </select>
+        </div>
+        
+        <div class="mb-3">
+            <label for="quantity" class="form-label">Available Quantity</label>
+            <input type="number" class="form-control" id="quantity" name="quantity" min="1" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Next</button>
+    </form>
+</div>

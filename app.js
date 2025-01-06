@@ -1,6 +1,8 @@
 import express from "express";
 import exphbs from "express-handlebars";
 import session from "express-session";
+import multer from "multer";
+import path from "path";
 
 import helperMethods from "./helpers.js";
 import configRoutes from "./routes/index.js";
@@ -29,7 +31,7 @@ const handlebarsInstance = exphbs.create({
 	// Specify helpers which are only registered on this instance.
 	helpers: {
 		asJSON: (obj, spacing) => {
-			if (typeof spacing === "")
+			if (typeof spacing === "string")
 				return new Handlebars.SafeString(JSON.stringify(obj, null, spacing));
 
 			return new Handlebars.SafeString(JSON.stringify(obj));
@@ -47,10 +49,11 @@ const handlebarsInstance = exphbs.create({
 });
 
 
+
 app.engine("handlebars", handlebarsInstance.engine);
 app.set("view engine", "handlebars");
 app.use('/public', staticDir);
-
+app.use('/tinymce', express.static(path.join('node_modules/tinymce')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(rewriteUnsupportedBrowserMethods);

@@ -1,5 +1,5 @@
 // Sample product data
-const products = [
+let products = [
     {
         id: 1,
         coverImage: 'https://placekitten.com/200/300',
@@ -58,4 +58,15 @@ const products = [
      },
 ];
 
-export { products };
+const categories = [
+    "Kittens",
+    "Cats",
+    "Dogs",
+    "Birds",
+    "Fish",
+    "Reptiles",
+    "Small Animals",
+    "Other"
+];
+
+export { products, categories };

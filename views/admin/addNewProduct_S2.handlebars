@@ -1,0 +1,85 @@
+<div class="container-fluid">
+    <h1>Add New Product - Step 2</h1>
+    
+    <form method="post" id="step2">
+        <div class="mb-3">
+            <label for="description" class="form-label">Product Description</label>
+            <textarea id="description" name="description" class="form-control"></textarea>
+        </div>
+        
+        <div class="mb-3">
+            <label for="hashtags" class="form-label">Hashtags (optional)</label>
+            <input type="text" class="form-control" id="hashtags" name="hashtags">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Next</button>
+    </form>
+
+    <script>
+        const productData = JSON.parse(sessionStorage.getItem('productData') || '{}');
+        document.getElementById('step2').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const productData = JSON.parse(sessionStorage.getItem('productData') || '{}');
+            const formData = new FormData();
+            Object.entries(productData).forEach(([key,value])=>{
+                formData.append(key, value);
+            })
+            if(description){
+                formData.append('description', description);
+            }
+            if(hashtags){
+                formData.append('hashtags', hashtags);
+            }
+            try {
+                const response = await fetch('/admin/products/add-product/step2', {
+                    method: 'POST',
+                    body: formData
+                });
+                if(response.ok){
+                    window.location.href = '/admin/products/add-product/step3';
+                } else {
+                    console.error('Error during fetch:', response.statusText);
+                }
+            }   catch(error){
+                console.error('Error during fetch:', error);
+            }
+        })
+        
+        tinymce.init({
+            selector: 'textarea',
+            plugins: [
+                // Core editing features
+                'anchor', 'autolink', 'charmap', 'codesample', 'emoticons', 
+                'image', 'link', 'lists', 'media', 'searchreplace', 'table', 
+                'visualblocks', 'wordcount',
+                
+                // Premium features (trial until Jan 19, 2025)
+                'checklist', 'mediaembed', 'casechange', 'export', 
+                'formatpainter', 'pageembed', 'a11ychecker', 
+                'tinymcespellchecker', 'permanentpen', 'powerpaste', 
+                'advtable', 'advcode', 'editimage', 'advtemplate', 'ai', 
+                'mentions', 'tinycomments', 'tableofcontents', 'footnotes', 
+                'mergetags', 'autocorrect', 'typography', 'inlinecss', 
+                'markdown', 'importword', 'exportword', 'exportpdf'
+            ],
+            toolbar: 'undo redo | blocks fontfamily fontsize | ' +
+                    'bold italic underline strikethrough | ' +
+                    'link image media table mergetags | ' +
+                    'addcomment showcomments | ' +
+                    'spellcheckdialog a11ycheck typography | ' +
+                    'align lineheight | ' +
+                    'checklist numlist bullist indent outdent | ' +
+                    'emoticons charmap | removeformat',
+            tinycomments_mode: 'embedded',
+            tinycomments_author: 'Author name',
+            mergetags_list: [
+                { value: 'First.Name', title: 'First Name' },
+                { value: 'Email', title: 'Email' },
+            ],
+            ai_request: (request, respondWith) => 
+                respondWith.string(() => 
+                    Promise.reject('See docs to implement AI Assistant')
+                ),
+        });
+    </script>
+</div>
