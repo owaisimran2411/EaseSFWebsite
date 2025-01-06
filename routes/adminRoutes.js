@@ -20,7 +20,35 @@ const upload = multer({ storage: storage });
 
 const router = Router();
 
-// Route goes here
+/**
+ * Admin Routes Module
+ * 
+ * This module handles all administrative routes for the application.
+ * It includes functionality for product management, authentication, and dashboard access.
+ * 
+ * Key Features:
+ * - File upload handling using Multer
+ * - Product management (viewing, adding, editing)
+ * - Admin authentication and authorization
+ * - Multi-step product creation process
+ * 
+ * Routes:
+ * - GET /                    - Admin login page
+ * - POST /                   - Process admin login
+ * - GET /home               - Admin dashboard
+ * - GET /products           - Product listing page
+ * - GET /products/add-product - Step 1 of product creation
+ * - POST /products/add-product - Process step 1 data
+ * - GET /products/add-product/step2 - Step 2 of product creation
+ * - POST /products/add-product/step2 - Process step 2 data
+ * 
+ * Dependencies:
+ * - express Router
+ * - multer for file uploads
+ * - helper methods for data validation
+ * - product and category data models
+ */
+
 router.route("/")
     .get((req, res) => {
         return res.render("admin/index", {

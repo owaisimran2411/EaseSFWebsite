@@ -1,6 +1,20 @@
 import { product } from "../config/mongoCollections.js";
 import helperMethods from "./../helpers.js";
 
+/**
+ * Creates a new product in the database
+ * @param {string} productName - The name of the product
+ * @param {number} productPrice - The price of the product
+ * @param {string} productCategory - The category of the product
+ * @param {number} productQuantity - The quantity of product in stock
+ * @param {string} productDescription - Detailed description of the product
+ * @param {string[]} productHashtags - Array of hashtags associated with the product
+ * @param {string} productCoverImage - Filename of the product's cover image
+ * @param {string[]} productImages - Array of filenames for additional product images
+ * @returns {Promise<string>} Returns the inserted document's ID if successful
+ * @throws {Error} Throws an error if product creation fails
+ */
+
 const createProduct = async (productName, productPrice, productCategory, productQuantity, productDescription, productHashtags, productCoverImage, productImages) => {
 
     
@@ -25,6 +39,12 @@ const createProduct = async (productName, productPrice, productCategory, product
     }
 };
 
+/**
+ * Searches for products in the database based on the provided search parameters
+ * @param {object} searchParams - The search parameters to filter the products
+ * @returns {Promise<Array>} Returns an array of products that match the search parameters
+ * @throws {Error} Throws an error if the search parameters are invalid
+ */
 const searchProduct = async (searchParams) => {
     let queryParams = undefined;
     try {
