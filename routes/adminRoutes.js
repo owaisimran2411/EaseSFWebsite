@@ -1,6 +1,7 @@
 import { Router } from "express";
 import helperMethods from "./../helpers.js";
 import { products, categories } from "./../data/testing.js";
+import { productData } from "./../data/index.js";
 
 import multer from "multer";
 import path from "path";
@@ -38,8 +39,8 @@ router.route("/home")
     });
 
 router.route("/products")
-    .get((req, res) => {
-        console.log(products);
+    .get(async (req, res) => {
+        const products = await productData.searchProduct();
         return res.render("admin/products", {
             docTitle: "Admin - Products",
             products: products
@@ -97,21 +98,33 @@ router.route("/products/add-product/step4")
         return res.render("admin/addNewProduct_S4", {
             docTitle: "Admin - Add Product - Step 4"
         });
-    }).post(upload.array('productImages', 10), (req, res) => {
+    }).post(upload.array('productImages', 10), async (req, res) => {
         let productImages = [];
         if (req.files) {
             productImages = req.files.map(file => `/public/uploads/${file.filename}`);
         }
-       const newProduct = {
-           ...req.body,
-            id: products.length + 1,
-           productImages: productImages
-        }
-        products.push(newProduct);
-        return res.send(`
+    //    const newProduct = {
+    //        ...req.body,
+    //         id: products.length + 1,
+    //        productImages: productImages
+    //     }
+    //     products.push(newProduct);
+        
+        const productName = req.body.name;
+        const productPrice = req.body.price;
+        const productCategory = req.body.category;
+        const productQuantity = req.body.quantity;
+        const productDescription = req.body.description;
+        const productHashtags = req.body.hashtags;
+        const productCoverImage = req.body.coverImage;
+        
+
+        // console.log(productsObject);
+        const newProduct = await productData.createProduct(productName, productPrice, productCategory, productQuantity, productDescription, productHashtags, productCoverImage, productImages);
+        return res.status(200).send(`
             <script>
                 sessionStorage.removeItem('productData')
-               window.location.href = '/admin/products';
+                window.location.href = '/admin/products';
             </script>
         `);
     });
