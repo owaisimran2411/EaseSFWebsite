@@ -8,11 +8,11 @@ import path from "path";
 // Multer configuration
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, path.join(__dirname, 'public/uploads/'));
+        cb(null, path.join('public/uploads/'));
     },
     filename: function (req, file, cb) {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
+        cb(null, file.fieldname + '-' + uniqueSuffix + '.' + file.mimetype.split('/')[1]);
     }
 });
 const upload = multer({ storage: storage });
@@ -39,6 +39,7 @@ router.route("/home")
 
 router.route("/products")
     .get((req, res) => {
+        console.log(products);
         return res.render("admin/products", {
             docTitle: "Admin - Products",
             products: products
@@ -77,7 +78,18 @@ router.route("/products/add-product/step3")
             docTitle: "Admin - Add Product - Step 3"
         });
     }).post(upload.single('coverImage'), (req, res) => {
-        return res.redirect("/admin/products/add-product/step4");
+        let coverImage = "";
+        if(req.file){
+            coverImage = `/public/uploads/${req.file.filename}`;
+            res.setHeader('x-filename', coverImage);
+        }
+        console.log(coverImage);
+        console.log(req.body);
+        return res.send(`
+            <script>
+                console.log(req.headers.get('x-filename'));
+            </script>
+        `);
     });
 
 router.route("/products/add-product/step4")
@@ -88,7 +100,7 @@ router.route("/products/add-product/step4")
     }).post(upload.array('productImages', 10), (req, res) => {
         let productImages = [];
         if (req.files) {
-            productImages = req.files.map(file => `/uploads/${file.filename}`);
+            productImages = req.files.map(file => `/public/uploads/${file.filename}`);
         }
        const newProduct = {
            ...req.body,

@@ -16,34 +16,6 @@
     </form>
 
     <script>
-        const productData = JSON.parse(sessionStorage.getItem('productData') || '{}');
-        document.getElementById('step2').addEventListener('submit', async function(event) {
-            event.preventDefault();
-            const productData = JSON.parse(sessionStorage.getItem('productData') || '{}');
-            const formData = new FormData();
-            Object.entries(productData).forEach(([key,value])=>{
-                formData.append(key, value);
-            })
-            if(description){
-                formData.append('description', description);
-            }
-            if(hashtags){
-                formData.append('hashtags', hashtags);
-            }
-            try {
-                const response = await fetch('/admin/products/add-product/step2', {
-                    method: 'POST',
-                    body: formData
-                });
-                if(response.ok){
-                    window.location.href = '/admin/products/add-product/step3';
-                } else {
-                    console.error('Error during fetch:', response.statusText);
-                }
-            }   catch(error){
-                console.error('Error during fetch:', error);
-            }
-        })
         
         tinymce.init({
             selector: 'textarea',
@@ -53,14 +25,6 @@
                 'image', 'link', 'lists', 'media', 'searchreplace', 'table', 
                 'visualblocks', 'wordcount',
                 
-                // Premium features (trial until Jan 19, 2025)
-                'checklist', 'mediaembed', 'casechange', 'export', 
-                'formatpainter', 'pageembed', 'a11ychecker', 
-                'tinymcespellchecker', 'permanentpen', 'powerpaste', 
-                'advtable', 'advcode', 'editimage', 'advtemplate', 'ai', 
-                'mentions', 'tinycomments', 'tableofcontents', 'footnotes', 
-                'mergetags', 'autocorrect', 'typography', 'inlinecss', 
-                'markdown', 'importword', 'exportword', 'exportpdf'
             ],
             toolbar: 'undo redo | blocks fontfamily fontsize | ' +
                     'bold italic underline strikethrough | ' +
@@ -81,5 +45,39 @@
                     Promise.reject('See docs to implement AI Assistant')
                 ),
         });
+        document.getElementById('step2').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const productData = JSON.parse(sessionStorage.getItem('productData') || '{}');
+            const formData = new URLSearchParams(productData);
+            Object.entries(this.elements).forEach(([key,element])=>{
+                if(element.name !== "" && element.value !== "" ){
+                    formData.append(element.name, element.value);
+                }
+            })
+            try {
+                const description = tinymce.get('description').getContent();
+                document.getElementById('description').value = description;
+                if(document.getElementById('description').value !== ""){
+                    formData.append('description', document.getElementById('description').value);
+                }
+                if(document.getElementById('hashtags').value !== ""){
+                    formData.append('hashtags', document.getElementById('hashtags').value);
+                }
+                const updatedProductData = JSON.stringify(Object.fromEntries(formData));
+                console.log(updatedProductData);
+                sessionStorage.setItem('productData', updatedProductData)
+                const response = await fetch('/admin/products/add-product/step2', {
+                    method: 'POST',
+                    body: updatedProductData
+                });
+                if (response.ok) {
+                    window.location.href = '/admin/products/add-product/step3';
+                } else {
+                    console.error('Error during fetch:', response.statusText);
+                }
+            } catch (error) {
+                console.error('Error during fetch:', error);
+            }
+        })
     </script>
 </div>

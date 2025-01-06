@@ -39,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# cover image
+/public/uploads/coverImage-*.png
+# product images
+/public/uploads/productImages-*.png

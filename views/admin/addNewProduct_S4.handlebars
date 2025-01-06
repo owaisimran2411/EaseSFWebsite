@@ -17,10 +17,10 @@
     <script>
         const productData = JSON.parse(sessionStorage.getItem('productData') || '{}');
         
-        if (productData.productImages) {
+        {{!-- if (productData.productImages) {
             const productImagesInput = document.getElementById('productImages');
             productImagesInput.removeAttribute('required');
-        }
+        } --}}
 
         document.getElementById('step4').addEventListener('submit', async function(event) {
             event.preventDefault();

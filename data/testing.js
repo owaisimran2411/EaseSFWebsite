@@ -56,6 +56,21 @@ let products = [
          description: 'This kitten is the cutest of the cute kittens!',
          price: 35.99
      },
+     {
+        name: 'some data',
+        price: '1',
+        category: 'Kittens',
+        quantity: '5',
+        description: '<p>some random <strong>description</strong> of product</p>',
+        hashtags: '#test #data',
+        coverImage: '/public/uploads/coverImage-1736198858094-941732964.png',
+        id: 9,
+        productImages: [
+          '/public/uploads/productImages-1736198863889-308773705.png',  
+          '/public/uploads/productImages-1736198863890-33615197.png',   
+          '/public/uploads/productImages-1736198863891-217349701.png'   
+        ]
+      }
 ];
 
 const categories = [
