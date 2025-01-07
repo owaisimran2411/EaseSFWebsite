@@ -1,0 +1,14 @@
+<div class="container">
+    <h2>Edit Product - Step 4</h2>
+    <form id="editProductFinalForm" action="/admin/products/edit-product/{{productInfo._id}}/step4" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="productImages">Current Product Images:</label>
+            {{#each productInfo.productImages}}
+                <img src="{{this}}" alt="Product image" class="preview-image">
+            {{/each}}
+            <input type="file" id="productImages" name="productImages" accept="image/*" multiple>
+        </div>
+        <input type="hidden" name="coverImage" id="coverImage">
+        <button type="submit" class="btn">Update Product</button>
+    </form>
+</div> 

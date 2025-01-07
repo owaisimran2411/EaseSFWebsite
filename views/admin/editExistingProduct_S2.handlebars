@@ -1,0 +1,14 @@
+<div class="container">
+    <h2>Edit Product - Step 2</h2>
+    <form id="editProductDetailsForm" action="/admin/products/edit-product/{{productInfo._id}}/step2" method="POST">
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" required>{{productInfo.description}}</textarea>
+        </div>
+        <div class="form-group">
+            <label for="hashtags">Hashtags:</label>
+            <input type="text" id="hashtags" name="hashtags" value="{{productInfo.hashtags}}" required>
+        </div>
+        <button type="submit" class="btn">Next</button>
+    </form>
+</div> 

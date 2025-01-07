@@ -93,9 +93,12 @@ router.route("/products/edit/:id")
         try {
             const id = req.params.id;
             const product = await productData.searchProduct({_id: id});
-            return res.render('admin/editProduct', {
-                docTitle: "Admin - Edit Product",
-                productInfo: product[0]
+            console.log(JSON.stringify(product[0]));
+            return res.render('admin/editExistingProduct_S1', {
+                docTitle: "Admin - Edit Product - Step 1",
+                productInfoString: JSON.stringify(product[0]),
+                productInfo: product[0],
+                categories: categories
             });
         } catch (error) {
             return res.status(500).send("Error retrieving product");

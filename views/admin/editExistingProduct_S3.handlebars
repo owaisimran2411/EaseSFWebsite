@@ -1,0 +1,13 @@
+<div class="container">
+    <h2>Edit Product - Step 3</h2>
+    <form id="editProductImageForm" action="/admin/products/edit-product/{{productInfo._id}}/step3" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="coverImage">Current Cover Image:</label>
+            {{#if productInfo.coverImage}}
+                <img src="{{productInfo.coverImage}}" alt="Current cover image" class="preview-image">
+            {{/if}}
+            <input type="file" id="coverImage" name="coverImage" accept="image/*">
+        </div>
+        <button type="submit" class="btn">Next</button>
+    </form>
+</div> 

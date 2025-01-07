@@ -44,6 +44,9 @@ const handlebarsInstance = exphbs.create({
 					return options.inverse(this);
 			}
 		},
+		eq: function(a, b) {
+			return a === b;
+		},
 		partialsDir: ["views/partials/"],
 	},
 });
