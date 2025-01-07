@@ -43,12 +43,13 @@
                 });
                 
                 if (response.ok) {
-                    const filename = response.headers.get('x-filename');
+                    {{!-- const filename = response.headers.get('x-filename');
                     console.log(response.headers.get('x-filename'));
                     const productData = JSON.parse(sessionStorage.getItem('productData') || '{}');
                     const updatedProductData = { ...productData, coverImage: filename };
-                    sessionStorage.setItem('productData', JSON.stringify(updatedProductData));
-                    window.location.href = '/admin/products/add-product/step4';
+                    sessionStorage.setItem('productData', JSON.stringify(updatedProductData)); --}}
+                    sessionStorage.removeItem('productData')
+                    window.location.href = '/admin/products';
                 } else {
                     console.error('Error during fetch:', response.statusText);
                 }

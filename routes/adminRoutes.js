@@ -5,6 +5,7 @@ import { productData } from "./../data/index.js";
 
 import multer from "multer";
 import path from "path";
+import fs from 'fs'
 
 // Multer configuration
 const storage = multer.diskStorage({
@@ -97,12 +98,12 @@ router.route("/products/delete/:id").get(async (req, res) => {
 
 });
 
-router.route("/products/edit/:id")
+router.route("/product/edit-product/:id")
     .get(async (req, res) => {
         try {
             const id = req.params.id;
             const product = await productData.searchProduct({_id: id});
-            console.log(JSON.stringify(product[0]));
+            // console.log(JSON.stringify(product[0]));
             return res.render('admin/editExistingProduct_S1', {
                 docTitle: "Admin - Edit Product - Step 1",
                 productInfoString: JSON.stringify(product[0]),
@@ -140,14 +141,27 @@ router.route("/product/edit-product/step3/:id")
             const newImage = req.file;
             
             if (oldImagePath) {
-                fs.unlink(path.join(__dirname, '../public', oldImagePath), (err) => {
-                    if (err) console.error('Error deleting old image:', err);
-                });
+                try {
+                    fs.unlink(`${process.cwd()}/${oldImagePath}`, (err) => {
+                        if (err) console.error('Error deleting old image:', err);
+                    });
+                } catch(error) {
+                    return res.status(500).json(error)
+                }
             }
-    
+            // console.log('===',req.body)
+            const updateObject = {
+                name: req.body.name,
+                price: req.body.price,
+                category: req.body.category,
+                quantity: req.body.quantity,
+                description: req.body.description,
+                hashtags: req.body.hashtags,
+                coverImage: req.body.oldImagePath ? `/public/uploads/${newfile.filename}` : req.body.coverImage
+            }
+            const updateProduct = await productData.updateProduct(req.params.id, updateObject)
             return res.json({
                 success: true,
-                newImagePath: `/uploads/${newImage.filename}`
             });
         } catch (error) {
             console.error('Error handling image update:', error);
@@ -157,6 +171,7 @@ router.route("/product/edit-product/step3/:id")
             });
         }
     });
+
 
 router.route("/products/add-product")
     .get((req, res) => {
@@ -189,11 +204,27 @@ router.route("/products/add-product/step3")
         return res.render("admin/addNewProduct_S3", {
             docTitle: "Admin - Add Product - Step 3"
         });
-    }).post(upload.single('coverImage'), (req, res) => {
+    }).post(upload.single('coverImage'), async (req, res) => {
         let coverImage = "";
         if(req.file){
             coverImage = `/public/uploads/${req.file.filename}`;
-            res.setHeader('x-filename', coverImage);
+            // res.setHeader('x-filename', coverImage);
+            const productName = req.body.name;
+            const productPrice = req.body.price;
+            const productCategory = req.body.category;
+            const productQuantity = req.body.quantity;
+            const productDescription = req.body.description;
+            const productHashtags = req.body.hashtags;
+            const productCoverImage = coverImage;
+
+            
+            const updatedProduct = await productData.updateProduct(productName, productPrice, productCategory, productQuantity, productDescription, productHashtags, productCoverImage, []);
+            return res.status(200).send(`
+                <script>
+                    sessionStorage.removeItem('productData')
+                    window.location.href = '/admin/products';
+                </script>
+            `);
         }
         return res.send(`
             <script>
@@ -202,32 +233,6 @@ router.route("/products/add-product/step3")
         `);
     });
 
-router.route("/products/add-product/step4")
-    .get((req, res) => {
-        return res.render("admin/addNewProduct_S4", {
-            docTitle: "Admin - Add Product - Step 4"
-        });
-    }).post(upload.array('productImages', 10), async (req, res) => {
-        let productImages = [];
-        if (req.files) {
-            productImages = req.files.map(file => `/public/uploads/${file.filename}`);
-        }
-        
-        const productName = req.body.name;
-        const productPrice = req.body.price;
-        const productCategory = req.body.category;
-        const productQuantity = req.body.quantity;
-        const productDescription = req.body.description;
-        const productHashtags = req.body.hashtags;
-        const productCoverImage = req.body.coverImage;
 
-        const newProduct = await productData.createProduct(productName, productPrice, productCategory, productQuantity, productDescription, productHashtags, productCoverImage, productImages);
-        return res.status(200).send(`
-            <script>
-                sessionStorage.removeItem('productData')
-                window.location.href = '/admin/products';
-            </script>
-        `);
-    });
 
 export default router;

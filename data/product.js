@@ -91,10 +91,34 @@ const deleteProduct  = async (productID) => {
     }
 }
 
+const updateProduct = async(productID, updateObject) => {
+    try {
+        const productCollection = await product()
+
+        
+
+        try {
+            const result = await productCollection.updateOne(
+                {_id: productID}, // Query to find the product by ID
+                {$set: updateObject} // Update operator to set the new values
+            );
+            if (result.modifiedCount === 0) {
+                throw new Error("Could not update product. Product not found or no changes made.");
+            }
+            return true; // Or return the updated product document
+        } catch (error) {
+            throw new Error("Error updating product: " + error);
+        }
+    } catch(error) {
+        throw new Error(error)
+    }
+}
+
 const methods = {
     createProduct,
     searchProduct,
-    deleteProduct
+    deleteProduct,
+    updateProduct
 };
 
 export default methods;

@@ -37,13 +37,17 @@
         const existingData = JSON.parse(sessionStorage.getItem('productUpdateData'));
         const productId = existingData._id;
 
+        const formData = new FormData();
+        Object.entries(existingData).forEach(([key, value]) => {
+            formData.append(key, value);
+        });
         if (fileInput.files && fileInput.files[0]) {
-            const formData = new FormData();
+            
             formData.append('coverImage', fileInput.files[0]);
             formData.append('oldImagePath', existingData.coverImage);
             
             try {
-                const response = await fetch(`/admin/products/edit-product/step3/${productId}/`, {
+                const response = await fetch(`/admin/product/edit-product/step3/${productId}/`, {
                     method: 'POST',
                     body: formData
                 });
@@ -52,22 +56,38 @@
                     throw new Error('Failed to update image');
                 }
 
-                const result = await response.json();
                 
-                const updatedData = {
-                    ...existingData,
-                    coverImage: result.newImagePath
-                };
-                sessionStorage.setItem('productUpdateData', JSON.stringify(updatedData));
                 
-                window.location.href = `/admin/edit-product/step4/${productId}`;
+                sessionStorage.removeItem('productUpdateData');
+                
+                window.location.href = `/admin/products`;
                 
             } catch (error) {
                 console.error('Error updating image:', error);
                 alert('Failed to update image. Please try again.');
             }
         } else {
-            window.location.href = `/admin/edit-product/step4/${productId}`;
+            try {
+                const response = await fetch(`/admin/product/edit-product/step3/${productId}/`, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to update image');
+                }
+
+                
+                
+                sessionStorage.removeItem('productUpdateData');
+                
+                window.location.href = `/admin/products`;
+                
+            } catch (error) {
+                console.error('Error updating image:', error);
+                alert('Failed to update image. Please try again.');
+            }
+            {{!-- window.location.href = `/admin/products`; --}}
         }
     });
 </script> 

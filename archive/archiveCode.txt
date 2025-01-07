@@ -1,0 +1,37 @@
+router.route("/products/add-product/step4")
+    .get((req, res) => {
+        return res.render("admin/addNewProduct_S4", {
+            docTitle: "Admin - Add Product - Step 4"
+        });
+    }).post(upload.array('productImages', 10), async (req, res) => {
+        let productImages = [];
+        if (req.files) {
+            productImages = req.files.map(file => `/public/uploads/${file.filename}`);
+        }
+        
+        const productName = req.body.name;
+        const productPrice = req.body.price;
+        const productCategory = req.body.category;
+        const productQuantity = req.body.quantity;
+        const productDescription = req.body.description;
+        const productHashtags = req.body.hashtags;
+        const productCoverImage = req.body.coverImage;
+
+        const newProduct = await productData.createProduct(productName, productPrice, productCategory, productQuantity, productDescription, productHashtags, productCoverImage, productImages);
+        return res.status(200).send(`
+            <script>
+                sessionStorage.removeItem('productData')
+                window.location.href = '/admin/products';
+            </script>
+        `);
+    });
+
+    router.route('/product/edit-product/step4/:id').get(async (req, res) => {
+    try {
+        return res.render('admin/editExistingProduct_S4', {
+            docTitle: "Admin - Edit Product - Step 4"
+        })
+    } catch (error) {
+        return res.status(500).send("Error loading edit product step 4");
+    }
+})
