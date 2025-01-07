@@ -75,6 +75,6 @@
         sessionStorage.setItem('productUpdateData', JSON.stringify(updatedData));
         
         // Submit the form
-        window.location.href = '/admin/product/edit-product/step3';
+        window.location.href = `/admin/product/edit-product/step3/${existingData._id}`;
     });
 </script> 

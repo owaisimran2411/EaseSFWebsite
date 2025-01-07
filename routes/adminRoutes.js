@@ -103,7 +103,7 @@ router.route("/products/edit/:id")
             return res.status(500).send("Error retrieving product");
         }
     });
-router.route("/product/edit-product/step2")
+router.route("/product/edit-product/step2/:id")
     .get(async (req, res) => {
         try {
             return res.render('admin/editExistingProduct_S2', {
@@ -113,7 +113,7 @@ router.route("/product/edit-product/step2")
             return res.status(500).send("Error loading edit product step 2");
         }
     });
-router.route("/product/edit-product/step3")
+router.route("/product/edit-product/step3/:id")
     .get(async (req, res) => {
         try {
             return res.render('admin/editExistingProduct_S3', {
@@ -121,6 +121,27 @@ router.route("/product/edit-product/step3")
             });
         } catch (error) {
             return res.status(500).send("Error loading edit product step 3");
+        }
+    }).post(upload.single('coverImage'), async (req, res) => {
+        try {
+            const oldImagePath = req.body.oldImagePath;
+            const newImage = req.file;
+            
+            if (oldImagePath) {
+                // Delete old image file
+                fs.unlink(path.join(__dirname, '../public', oldImagePath), (err) => {
+                    if (err) console.error('Error deleting old image:', err);
+                });
+            }
+    
+            // Return the new image path
+            return res.json({
+                success: true,
+                newImagePath: `/uploads/${newImage.filename}` // Adjust path according to your setup
+            });
+        } catch (error) {
+            console.error('Error handling image update:', error);
+            return res.status(500).json({ success: false, message: 'Failed to update image' });
         }
     });
 
