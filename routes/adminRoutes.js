@@ -88,6 +88,22 @@ router.route("/products/delete/:id").get(async (req, res) => {
 
 });
 
+router.route("/products/edit/:id")
+    .get(async (req, res) => {
+        try {
+            const id = req.params.id;
+            const product = await productData.searchProduct({_id: id});
+            return res.render('admin/editProduct', {
+                docTitle: "Admin - Edit Product",
+                productInfo: product[0]
+            });
+        } catch (error) {
+            return res.status(500).send("Error retrieving product");
+        }
+    });
+
+
+
 router.route("/products/add-product")
     .get((req, res) => {
         return res.render("admin/addNewProduct_S1", {
