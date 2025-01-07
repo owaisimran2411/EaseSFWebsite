@@ -103,6 +103,18 @@ router.route("/products/edit/:id")
             return res.status(500).send("Error retrieving product");
         }
     });
+router.route("/product/edit-product/step2")
+    .get(async (req, res) => {
+        try {
+            return res.render('admin/editExistingProduct_S2', {
+                docTitle: "Admin - Edit Product - Step 2"
+            });
+        } catch (error) {
+            return res.status(500).send("Error loading edit product step 2");
+        }
+    });
+
+
 
 
 

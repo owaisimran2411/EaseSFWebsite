@@ -1,14 +1,80 @@
 <div class="container">
     <h2>Edit Product - Step 2</h2>
     <form id="editProductDetailsForm" action="/admin/products/edit-product/{{productInfo._id}}/step2" method="POST">
-        <div class="form-group">
-            <label for="description">Description:</label>
-            <textarea id="description" name="description" required>{{productInfo.description}}</textarea>
+        <div class="mb-3">
+            <label for="description" class="form-label">Description:</label>
+            <textarea id="description" name="description" class="form-control" required></textarea>
         </div>
-        <div class="form-group">
-            <label for="hashtags">Hashtags:</label>
-            <input type="text" id="hashtags" name="hashtags" value="{{productInfo.hashtags}}" required>
+        <div class="mb-3">
+            <label for="hashtags" class="form-label">Hashtags (optional)</label>
+            <input type="text" id="hashtags" name="hashtags" class="form-control">
         </div>
-        <button type="submit" class="btn">Next</button>
+        <button type="submit" class="btn btn-primary">Next</button>
     </form>
 </div> 
+
+<script>
+    tinymce.init({
+            selector: 'textarea',
+            plugins: [
+                // Core editing features
+                'anchor', 'autolink', 'charmap', 'codesample', 'emoticons', 
+                'image', 'link', 'lists', 'media', 'searchreplace', 'table', 
+                'visualblocks', 'wordcount',
+                
+            ],
+            toolbar: 'undo redo | blocks fontfamily fontsize | ' +
+                    'bold italic underline strikethrough | ' +
+                    'link image media table mergetags | ' +
+                    'addcomment showcomments | ' +
+                    'spellcheckdialog a11ycheck typography | ' +
+                    'align lineheight | ' +
+                    'checklist numlist bullist indent outdent | ' +
+                    'emoticons charmap | removeformat',
+            tinycomments_mode: 'embedded',
+            tinycomments_author: 'Author name',
+            mergetags_list: [
+                { value: 'First.Name', title: 'First Name' },
+                { value: 'Email', title: 'Email' },
+            ],
+            ai_request: (request, respondWith) => 
+                respondWith.string(() => 
+                    Promise.reject('See docs to implement AI Assistant')
+                ),
+        });
+    window.addEventListener('load', () => {
+        // Get stored product data
+        const storedData = JSON.parse(sessionStorage.getItem('productUpdateData'));
+        
+        // If we have stored data, populate the fields
+        if (storedData) {
+            if (storedData.description) {
+                document.getElementById('description').value = storedData.description;
+            }
+            if (storedData.hashtags) {
+                document.getElementById('hashtags').value = storedData.hashtags;
+            }
+        }
+    });
+
+    // New form submit handler
+    document.getElementById('editProductDetailsForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        // Get current product data from session storage
+        const existingData = JSON.parse(sessionStorage.getItem('productUpdateData'));
+        
+        // Update with new form values
+        const updatedData = {
+            ...existingData,
+            description: tinymce.get('description').getContent(), // Use tinymce to get formatted content
+            hashtags: document.getElementById('hashtags').value
+        };
+        
+        // Save updated data back to session storage
+        sessionStorage.setItem('productUpdateData', JSON.stringify(updatedData));
+        
+        // Submit the form
+        window.location.href = '/admin/product/edit-product/step3';
+    });
+</script> 
