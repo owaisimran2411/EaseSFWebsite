@@ -27,26 +27,25 @@ const router = Router();
  * It includes functionality for product management, authentication, and dashboard access.
  * 
  * Key Features:
- * - File upload handling using Multer
- * - Product management (viewing, adding, editing)
- * - Admin authentication and authorization
- * - Multi-step product creation process
+ * - File upload handling using Multer for product images
+ * - Product management (viewing, adding, deleting products)
+ * - Basic admin authentication 
+ * - Single-step product creation process
  * 
  * Routes:
  * - GET /                    - Admin login page
- * - POST /                   - Process admin login
+ * - POST /                   - Process admin login (currently just redirects)
  * - GET /home               - Admin dashboard
- * - GET /products           - Product listing page
- * - GET /products/add-product - Step 1 of product creation
- * - POST /products/add-product - Process step 1 data
- * - GET /products/add-product/step2 - Step 2 of product creation
- * - POST /products/add-product/step2 - Process step 2 data
+ * - GET /products           - Product listing page showing all products
+ * - GET /products/add-product - Add new product form
+ * - POST /products/add-product - Process new product data
+ * - GET /products/delete/:id - Delete a product by ID
  * 
  * Dependencies:
- * - express Router
- * - multer for file uploads
- * - helper methods for data validation
- * - product and category data models
+ * - express Router for routing
+ * - multer for handling file/image uploads
+ * - helper methods for validation and ID generation
+ * - MongoDB collections accessed through data layer
  */
 
 router.route("/")
@@ -74,6 +73,20 @@ router.route("/products")
             products: products
         });
     });
+
+router.route("/products/delete/:id").get(async (req, res) => {
+    const id = req.params.id;   
+
+    try {
+        console.log('I am here');
+        const product = await productData.deleteProduct(id)       
+        return res.redirect("/admin/products");
+    } catch (error) {
+        return res.status(500).send("Error deleting product");
+    }
+
+
+});
 
 router.route("/products/add-product")
     .get((req, res) => {

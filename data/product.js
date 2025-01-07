@@ -16,7 +16,7 @@ import helperMethods from "./../helpers.js";
  */
 
 const createProduct = async (productName, productPrice, productCategory, productQuantity, productDescription, productHashtags, productCoverImage, productImages) => {
-
+    // TODO: Add arguments validation and primitive type validation
     
     try {
         const productCollection = await product();
@@ -60,9 +60,41 @@ const searchProduct = async (searchParams) => {
     const products = await productCollection.find(queryParams).toArray();
     return products;
 };
+/**
+ * Deletes a product from the database based on the provided product ID
+ * @param {string} productID - The ID of the product to delete
+ * @returns {Promise<boolean>} Returns true if deletion was successful
+ * @throws {Error} Throws an error if:
+ * - productID parameter is missing or invalid
+ * - Product could not be found
+ * - Deletion operation fails
+ */
+
+const deleteProduct  = async (productID) => {
+    // TODO: Add arguments validation and primitive type validation
+
+    const productCollection = await product();
+    try {
+        
+        console.log('I am here');
+        const product = await searchProduct({_id: productID});
+        if (product.length === 0) {
+            return true;
+        }
+        const productDeleted = await productCollection.findOneAndDelete({_id: productID});
+        if (productDeleted.deletedCount === 0) {
+            throw new Error("Product not found or could not be deleted");
+        }
+        return true;
+    } catch (error) {
+        throw new Error("Error deleting product");
+    }
+}
+
 const methods = {
     createProduct,
-    searchProduct
+    searchProduct,
+    deleteProduct
 };
 
 export default methods;
