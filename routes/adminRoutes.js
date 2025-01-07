@@ -28,17 +28,25 @@ const router = Router();
  * 
  * Key Features:
  * - File upload handling using Multer for product images
- * - Product management (viewing, adding, deleting products)
- * - Basic admin authentication 
- * - Single-step product creation process
+ * - Product management (viewing, editing, adding, deleting products)
+ * - Basic admin authentication
+ * - Multi-step product creation and editing process
+ * - Image upload and management
  * 
  * Routes:
  * - GET /                    - Admin login page
- * - POST /                   - Process admin login (currently just redirects)
+ * - POST /                   - Process admin login (currently just redirects) 
  * - GET /home               - Admin dashboard
  * - GET /products           - Product listing page showing all products
- * - GET /products/add-product - Add new product form
- * - POST /products/add-product - Process new product data
+ * - GET /products/add-product/step1 - Add product step 1 (basic info)
+ * - POST /products/add-product/step1 - Process step 1 data
+ * - GET /products/add-product/step2 - Add product step 2 (description)
+ * - POST /products/add-product/step2 - Process step 2 data
+ * - GET /products/add-product/step3 - Add product step 3 (image)
+ * - POST /products/add-product/step3 - Process step 3 data
+ * - GET /products/add-product/step4 - Add product step 4 (review)
+ * - POST /products/add-product/step4 - Process final submission
+ * - GET /products/edit/:id - Edit existing product
  * - GET /products/delete/:id - Delete a product by ID
  * 
  * Dependencies:
@@ -46,6 +54,7 @@ const router = Router();
  * - multer for handling file/image uploads
  * - helper methods for validation and ID generation
  * - MongoDB collections accessed through data layer
+ * - Session storage for multi-step form data persistence
  */
 
 router.route("/")
@@ -103,6 +112,7 @@ router.route("/products/edit/:id")
             return res.status(500).send("Error retrieving product");
         }
     });
+
 router.route("/product/edit-product/step2/:id")
     .get(async (req, res) => {
         try {
@@ -113,6 +123,7 @@ router.route("/product/edit-product/step2/:id")
             return res.status(500).send("Error loading edit product step 2");
         }
     });
+
 router.route("/product/edit-product/step3/:id")
     .get(async (req, res) => {
         try {
@@ -122,32 +133,30 @@ router.route("/product/edit-product/step3/:id")
         } catch (error) {
             return res.status(500).send("Error loading edit product step 3");
         }
-    }).post(upload.single('coverImage'), async (req, res) => {
+    })
+    .post(upload.single('coverImage'), async (req, res) => {
         try {
             const oldImagePath = req.body.oldImagePath;
             const newImage = req.file;
             
             if (oldImagePath) {
-                // Delete old image file
                 fs.unlink(path.join(__dirname, '../public', oldImagePath), (err) => {
                     if (err) console.error('Error deleting old image:', err);
                 });
             }
     
-            // Return the new image path
             return res.json({
                 success: true,
-                newImagePath: `/uploads/${newImage.filename}` // Adjust path according to your setup
+                newImagePath: `/uploads/${newImage.filename}`
             });
         } catch (error) {
             console.error('Error handling image update:', error);
-            return res.status(500).json({ success: false, message: 'Failed to update image' });
+            return res.status(500).json({ 
+                success: false, 
+                message: 'Failed to update image' 
+            });
         }
     });
-
-
-
-
 
 router.route("/products/add-product")
     .get((req, res) => {

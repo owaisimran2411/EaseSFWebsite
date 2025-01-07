@@ -1,17 +1,20 @@
 <div class="container">
     <h2>Edit Product - Step 3</h2>
-    <form id="editProductImageForm" action="/admin/products/edit-product/{{productInfo._id}}/step3" method="POST" enctype="multipart/form-data">
+    <form id="editProductImageForm" method="POST" enctype="multipart/form-data">
         <div class="mb-3">
             <label for="coverImage" class="form-label">Current Cover Image:</label>
             <div id="currentImagePreview">
                 <!-- Preview will be inserted here -->
             </div>
-            <input type="file" id="coverImage" name="coverImage" accept="image/*" class="form-control">
+            <input type="file" 
+                   id="coverImage" 
+                   name="coverImage" 
+                   accept="image/*" 
+                   class="form-control">
         </div>
-        <br>
         <button type="submit" class="btn btn-primary">Next</button>
     </form>
-</div> 
+</div>
 
 <script>
     window.addEventListener('load', () => {
@@ -32,16 +35,14 @@
         
         const fileInput = document.getElementById('coverImage');
         const existingData = JSON.parse(sessionStorage.getItem('productUpdateData'));
-        const productId = existingData._id; // Get product ID from Handlebars context
+        const productId = existingData._id;
 
         if (fileInput.files && fileInput.files[0]) {
-            // User has selected a new file
             const formData = new FormData();
             formData.append('coverImage', fileInput.files[0]);
             formData.append('oldImagePath', existingData.coverImage);
             
             try {
-                // Send request to update image
                 const response = await fetch(`/admin/products/edit-product/step3/${productId}/`, {
                     method: 'POST',
                     body: formData
@@ -53,14 +54,12 @@
 
                 const result = await response.json();
                 
-                // Update session storage with new image path
                 const updatedData = {
                     ...existingData,
                     coverImage: result.newImagePath
                 };
                 sessionStorage.setItem('productUpdateData', JSON.stringify(updatedData));
                 
-                // Proceed to next step
                 window.location.href = `/admin/edit-product/step4/${productId}`;
                 
             } catch (error) {
@@ -68,7 +67,6 @@
                 alert('Failed to update image. Please try again.');
             }
         } else {
-            // No new file selected, just proceed to next step
             window.location.href = `/admin/edit-product/step4/${productId}`;
         }
     });
