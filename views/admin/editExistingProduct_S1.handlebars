@@ -1,36 +1,95 @@
 <div class="container-fluid">
     <h2>Edit Product - Step 1</h2>
+    
+    {{!-- Hidden element for storing product data --}}
     <p id="jsonDataHolder" style="display: none;">{{productInfoString}}</p>
+    
     <form id="editProductForm" method="POST">
+        {{!-- Product Name Field --}}
         <div class="mb-3">
             <label for="name" class="form-label">Product Name:</label>
-            <input type="text" class="form-control" id="name" name="name" value="{{productInfo.name}}" required>
+            <input type="text" 
+                   class="form-control" 
+                   id="name" 
+                   name="name" 
+                   required>
         </div>
+
+        {{!-- Category Selection --}}
         <div class="mb-3">
             <label for="category" class="form-label">Category:</label>
-            <select id="category" name="category" required class="form-select">
+            <select id="category" 
+                    name="category" 
+                    class="form-select" 
+                    required>
                 {{#each categories}}
-                    <option value="{{this}}" {{#if (eq this ../productInfo.category)}}selected{{/if}}>{{this}}</option>
+                    <option value="{{this}}">{{this}}</option>
                 {{/each}}
             </select>
         </div>
+
+        {{!-- Price Field --}}
         <div class="mb-3">
             <label for="price" class="form-label">Price:</label>
-            <input type="number" id="price" name="price" value="{{productInfo.price}}" step="0.01" required class="form-control">
+            <input type="number" 
+                   class="form-control"
+                   id="price" 
+                   name="price" 
+                   step="0.01" 
+                   required>
         </div>
+
+        {{!-- Quantity Field --}}
         <div class="mb-3">
             <label for="quantity" class="form-label">Quantity:</label>
-            <input type="number" id="quantity" name="quantity" value="{{productInfo.quantity}}" required class="form-control">
+            <input type="number" 
+                   class="form-control"
+                   id="quantity" 
+                   name="quantity" 
+                   required>
         </div>
+
         <button type="submit" class="btn btn-primary">Next</button>
     </form>
 </div>
 
 <script>
-window.addEventListener('load', () => {
-    const jsonDataElement = document.getElementById('jsonDataHolder');
-    const jsonData = jsonDataElement.textContent;
+    window.addEventListener('load', () => {
+        const jsonDataElement = document.getElementById('jsonDataHolder');
+        const jsonData = jsonDataElement.textContent;
+        const parsedData = JSON.parse(jsonData);
 
-    sessionStorage.setItem('productUpdateData', jsonData);
-});
+        // Store data in session storage for later use
+        sessionStorage.setItem('productUpdateData', jsonData);
+
+        // Populate form fields with existing data
+        document.getElementById('name').value = parsedData.name;
+        document.getElementById('category').value = parsedData.category;
+        document.getElementById('price').value = parsedData.price;
+        document.getElementById('quantity').value = parsedData.quantity;
+    });
+
+    // Add form submit handler
+    document.getElementById('editProductForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        // Get current product data from session storage
+        const existingData = JSON.parse(sessionStorage.getItem('productUpdateData'));
+        
+        // Update with new form values
+        const updatedData = {
+            ...existingData,
+            name: document.getElementById('name').value,
+            category: document.getElementById('category').value,
+            price: document.getElementById('price').value,
+            quantity: document.getElementById('quantity').value
+        };
+        
+        // Save updated data back to session storage
+        sessionStorage.setItem('productUpdateData', JSON.stringify(updatedData));
+        
+        // Navigate to next step
+        console.log(updatedData);
+        {{!-- window.location.href = '/admin/edit-product/step2'; --}}
+    });
 </script> 

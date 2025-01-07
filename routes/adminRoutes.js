@@ -97,7 +97,6 @@ router.route("/products/edit/:id")
             return res.render('admin/editExistingProduct_S1', {
                 docTitle: "Admin - Edit Product - Step 1",
                 productInfoString: JSON.stringify(product[0]),
-                productInfo: product[0],
                 categories: categories
             });
         } catch (error) {
