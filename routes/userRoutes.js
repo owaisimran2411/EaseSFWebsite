@@ -14,4 +14,9 @@ router.route('/')
         })
     })
 
+router.route('/product/:id')
+    .get(async (req, res) => {
+        const product = await productData.searchProduct({_id: req.params.id})
+        return res.json(product[0])
+    })
 export default router;

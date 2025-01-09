@@ -7,7 +7,7 @@
                     <div class="card-body">
                         <h5 class="card-title">{{this.name}}</h5>
                         <p class="card-text">{{{this.description}}}</p>
-                        <div class="d-flex align-items-center justify-content-end">
+                       <div class="d-flex align-items-center justify-content-end">
                          <p class="card-text product-price">${{this.price}}</p>
                         </div>
                         <div class="cart-controls" id="cart-controls-{{this._id}}">
@@ -21,6 +21,14 @@
                 </div>
             </div>
         {{/each}}
+    </div>
+</div>
+<div id="productModal" class="modal">
+  <div class="modal-content">
+    <span class="close">×</span>
+        <div id="modal-product-details">
+        </div>
+        <div id="modal-cart-controls"></div>
     </div>
 </div>
 <script src="/public/js/script.js"></script>

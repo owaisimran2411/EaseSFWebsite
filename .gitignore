@@ -41,6 +41,6 @@ yarn-error.log*
 next-env.d.ts
 
 # cover image
-/public/uploads/coverImage-*.png
+/public/uploads/coverImage-*
 # product images
-/public/uploads/productImages-*.png
+/public/uploads/productImages-*
