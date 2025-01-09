@@ -218,7 +218,7 @@ router.route("/products/add-product/step3")
             const productCoverImage = coverImage;
 
             
-            const updatedProduct = await productData.updateProduct(productName, productPrice, productCategory, productQuantity, productDescription, productHashtags, productCoverImage, []);
+            const updatedProduct = await productData.createProduct(productName, productPrice, productCategory, productQuantity, productDescription, productHashtags, productCoverImage, []);
             return res.status(200).send(`
                 <script>
                     sessionStorage.removeItem('productData')
