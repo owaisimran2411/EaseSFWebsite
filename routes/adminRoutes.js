@@ -1,6 +1,6 @@
 import { Router } from "express";
 import helperMethods from "./../helpers.js";
-import { products, categories } from "./../data/testing.js";
+// import { products, categories } from "./../data/testing.js";
 import { categoryData, productData } from "./../data/index.js";
 
 import multer from "multer";
@@ -131,7 +131,7 @@ router.route("/product/edit-product/:id")
         try {
             const id = req.params.id;
             const product = await productData.searchProduct({_id: id});
-            // console.log(JSON.stringify(product[0]));
+            const categories = await categoryData.searchCategories()
             return res.render('admin/editExistingProduct_S1', {
                 docTitle: "Admin - Edit Product - Step 1",
                 productInfoString: JSON.stringify(product[0]),
@@ -202,7 +202,8 @@ router.route("/product/edit-product/step3/:id")
 
 
 router.route("/products/add-product")
-    .get((req, res) => {
+    .get(async (req, res) => {
+        const categories = await categoryData.searchCategories({})
         return res.render("admin/addNewProduct_S1", {
             docTitle: "Admin - Add Product - Step 1",
             categories: categories
