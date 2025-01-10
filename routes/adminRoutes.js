@@ -1,7 +1,7 @@
 import { Router } from "express";
 import helperMethods from "./../helpers.js";
 import { products, categories } from "./../data/testing.js";
-import { productData } from "./../data/index.js";
+import { categoryData, productData } from "./../data/index.js";
 
 import multer from "multer";
 import path from "path";
@@ -84,11 +84,39 @@ router.route("/products")
         });
     });
 
+router.route('/category')
+    .get(async (req, res) => {
+        const categories = await categoryData.searchCategories()
+        return res.render('admin/category', {
+            docTitle: 'Admin - Categories',
+            categories: categories
+        })
+    })
+    .post(async (req, res) => {
+        try {
+            const newCategory = await categoryData.createCategory(req.body.name)
+            return res.json(newCategory)
+        } catch (error) {
+            return res.json(error)
+        }
+    })
+
+router.route('/category/:categoryID')
+    .post(async (req, res) => {
+        try {
+            const categoryUpdate = await categoryData.updateCategory(req.params.categoryID, req.body.name)
+            if(categoryUpdate === true) {
+                return res.status(200).json("Success")
+            }
+        } catch(err) {
+            return res.json(err)
+        }
+    })
+
 router.route("/products/delete/:id").get(async (req, res) => {
     const id = req.params.id;   
 
     try {
-        console.log('I am here');
         const product = await productData.deleteProduct(id)       
         return res.redirect("/admin/products");
     } catch (error) {

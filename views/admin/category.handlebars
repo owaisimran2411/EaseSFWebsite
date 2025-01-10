@@ -1,0 +1,64 @@
+<div class="container"></div>
+        <h1>Category Management</h1>
+         <table class="table">
+           <thead>
+             <tr>
+                <th>Category Name</th>
+                <th>Actions</th>
+             </tr>
+           </thead>
+           <tbody>
+             {{#each categories}}
+                <tr data-category-id="{{this._id}}">
+                  <td>{{this.name}}</td>
+                  <td>
+                     <button class="btn btn-sm btn-primary edit-category" data-category-id="{{this._id}}">
+                       <i class="fas fa-edit"></i>
+                      <span>Edit</span>
+                    </button>
+                   <button class="btn btn-sm btn-danger delete-category" data-category-id="{{this._id}}">
+                       <i class="fas fa-trash"></i>
+                      <span>Delete</span>
+                     </button>
+                  </td>
+                </tr>
+              {{/each}}
+            </tbody>
+           <tfoot>
+               <tr>
+                 <td colspan="2">
+                   <button class="btn btn-success add-category" >
+                     <i class="fas fa-plus"></i>
+                    Add New Category
+                  </button>
+                 </td>
+               </tr>
+           </tfoot>
+        </table>
+    </div>
+    <div id="editCategoryModal" class="modal">
+        <div class="modal-content">
+            <span class="close-cateogry-edit close">×</span>
+            <h2>Edit Category</h2>
+            <input type="hidden" id="edit-category-id">
+            <div class="form-group">
+               <label for="edit-category-name">Category Name</label>
+              <input type="text" class="form-control" id="edit-category-name" />
+            </div>
+            <button class="btn btn-primary update-category">Update</button>
+             <button class="btn btn-secondary cancel-edit-category">Cancel</button>
+        </div>
+    </div>
+      <div id="addCategoryModal" class="modal">
+        <div class="modal-content">
+            <span class="close-category-add close">×</span>
+            <h2>Add Category</h2>
+           <div class="form-group">
+               <label for="new-category-name">Category Name</label>
+              <input type="text" class="form-control" id="new-category-name" />
+            </div>
+            <button class="btn btn-success create-category">Add</button>
+            <button class="btn btn-secondary cancel-add-category">Cancel</button>
+        </div>
+    </div>
+    <script src="/public/js/script.js"></script>
