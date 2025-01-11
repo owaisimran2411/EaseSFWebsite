@@ -174,7 +174,7 @@ router.route("/product/edit-product/step3/:id")
                         if (err) console.error('Error deleting old image:', err);
                     });
                 } catch(error) {
-                    return res.status(500).json(error)
+                    console.error(error)
                 }
             }
             // console.log('===',req.body)
@@ -185,7 +185,7 @@ router.route("/product/edit-product/step3/:id")
                 quantity: req.body.quantity,
                 description: req.body.description,
                 hashtags: req.body.hashtags,
-                coverImage: req.body.oldImagePath ? `/public/uploads/${newfile.filename}` : req.body.coverImage
+                coverImage: req.body.oldImagePath ? `/public/uploads/${newImage.filename}` : req.body.coverImage
             }
             const updateProduct = await productData.updateProduct(req.params.id, updateObject)
             return res.json({
