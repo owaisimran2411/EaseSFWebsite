@@ -19,4 +19,11 @@ router.route('/product/:id')
         const product = await productData.searchProduct({_id: req.params.id})
         return res.json(product[0])
     })
+
+router.route('/cart')
+    .get(async (req, res) => {
+        return res.render('user/viewCart', {
+            docTitle: 'Cart'
+        })
+    })
 export default router;
