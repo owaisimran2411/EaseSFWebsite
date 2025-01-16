@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function() {
      });
       function openProductModal(productId) {
         productModal.style.display = 'block';
-         fetch(`/product/${productId}`)
+         fetch(`/user/product/${productId}`)
              .then(response => {
                  if (!response.ok) {
                      throw new Error(`HTTP error! status: ${response.status}`);
