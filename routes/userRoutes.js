@@ -34,4 +34,7 @@ router.route('/checkout')
             checkout: true
         })
     })
+    .post(async (req, res) => {
+        return
+    })
 export default router;
