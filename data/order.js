@@ -24,6 +24,8 @@ const createOrder = async (firstName, lastName, phoneNumber, email, addressLine1
     }
 }
 
-const methods = {};
+const methods = {
+    createOrder
+};
 
 export default methods;
