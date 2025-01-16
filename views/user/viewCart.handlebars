@@ -1,4 +1,7 @@
-<div class="container">
+{{#if checkout}}
+
+{{else}}
+<div class="container"></div>
     <h1>Your Shopping Cart</h1>
     <div class="row" id="cart-items">
         <!-- Cart items will be dynamically added here -->
@@ -10,3 +13,4 @@
 </div>
 
 <script src="/public/js/cartScript.js"></script>
+{{/if}}
