@@ -44,3 +44,6 @@ next-env.d.ts
 /public/uploads/coverImage-*
 # product images
 /public/uploads/productImages-*
+
+templateFiles/*
+Makefile
