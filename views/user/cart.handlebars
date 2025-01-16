@@ -1,0 +1,78 @@
+{{#if checkout}}
+<div class="container">
+    <h1>Checkout</h1>
+
+    <form id="checkout-form" method="POST">
+        <h2>Personal Information</h2>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="firstName">First Name</label>
+                <input type="text" class="form-control" id="firstName" required>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="lastName">Last Name</label>
+                <input type="text" class="form-control" id="lastName" required>
+            </div>
+        </div>
+            <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="phoneNumber">Phone Number</label>
+                <input type="tel" class="form-control" id="phoneNumber" required>
+                </div>
+            <div class="form-group col-md-6">
+                <label for="emailAddress">Email Address</label>
+                <input type="email" class="form-control" id="emailAddress" required>
+                </div>
+            </div>
+            <h2>Delivery Information</h2>
+            <div class="form-group">
+                <label for="addressLine1">Address Line 1</label>
+                <input type="text" class="form-control" id="addressLine1" required>
+            </div>
+            <div class="form-group">
+                <label for="addressLine2">Address Line 2 (Optional)</label>
+                <input type="text" class="form-control" id="addressLine2">
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="city">City</label>
+                    <input type="text" class="form-control" id="city" required>
+                </div>
+                <div class="form-group col-md-4">
+                <label for="state">State</label>
+                <select class="form-control" id="state" required>
+                    <option value="" disabled selected>Select a state</option>
+                </select>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="zipCode">ZIP Code</label>
+                    <input type="text" class="form-control" id="zipCode" required>
+                </div>
+            </div>
+
+            <h2>Order Information</h2>
+            <div class="row" id="order-items">
+            </div>
+
+            <h2>Bill</h2>
+            <div id="bill-summary"></div>
+            <button type="submit" class="btn btn-primary">Place Order</button>
+        </form>
+</div>
+<script src="/public/js/checkoutScript.js"></script>
+{{else}}
+<div class="container">
+    <h1>Your Shopping Cart</h1>
+    <div class="row" id="cart-items">
+        <!-- Cart items will be dynamically added here -->
+    </div>
+        <div class="cart-summary">
+        <h2>Cart Summary</h2>
+        <div id="cart-total"></div>
+    </div>
+    <div id="checkout-container">
+    </div>
+</div>
+<script src="/public/js/cartScript.js"></script>
+
+{{/if}}

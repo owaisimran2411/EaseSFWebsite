@@ -22,8 +22,16 @@ router.route('/product/:id')
 
 router.route('/cart')
     .get(async (req, res) => {
-        return res.render('user/viewCart', {
+        return res.render('user/cart', {
             docTitle: 'Cart'
+        })
+    })
+
+router.route('/checkout')
+    .get(async (req, res) => {
+        return res.render('user/cart', {
+            docTitle: 'Checkout',
+            checkout: true
         })
     })
 export default router;
