@@ -16,7 +16,7 @@ router.route('/')
 
 router.route('/product/:id')
     .get(async (req, res) => {
-        const product = await productData.searchProduct({_id: req.params.id})
+        const product = await productData.searchProduct({ _id: req.params.id })
         return res.json(product[0])
     })
 
@@ -39,17 +39,17 @@ router.route('/checkout')
         // processing cart object first
         const cartItems = JSON.parse(req.body.cart)
         const cartObject = []
-        for(let i=0; i<Object.keys(cartItems).length; i++) {
+        for (let i = 0; i < Object.keys(cartItems).length; i++) {
             // console.log(Object.keys(cartItems)[i])
             try {
-                const prod = await productData.searchProduct({_id: Object.keys(cartItems)[i]})
+                const prod = await productData.searchProduct({ _id: Object.keys(cartItems)[i] })
                 cartObject.push({
                     productID: prod[0]._id,
                     quantity: cartItems[Object.keys(cartItems)[i]],
                     price: Number(prod[0].price)
                 })
-            } catch(err) {
-                return res.status(404).json({error: err})
+            } catch (err) {
+                return res.status(404).json({ error: err })
             }
         }
         try {
@@ -65,11 +65,11 @@ router.route('/checkout')
             const userId = req.body.userID
             const order = await ordersData.createOrder(
                 firstName, lastName, phoneNumber, emailAddress,
-                addressLine1, addressLine2, addressCity, addressState, addressZipCode, cartObject, userId 
+                addressLine1, addressLine2, addressCity, addressState, addressZipCode, cartObject, userId
             )
             console.log(order)
         } catch (err) {
-            return res.status(404).json({error: err})
+            return res.status(404).json({ error: err })
         }
         return
     })
