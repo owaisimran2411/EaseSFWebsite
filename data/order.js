@@ -12,7 +12,7 @@ const createOrder = async (firstName, lastName, phoneNumber, email, addressLine1
             lastName: lastName,
             phoneNumber: phoneNumber,
             email: email,
-            address: `${addressLine1}, ${addressLine2 + ', ' || ''} ${addressCity}, ${addressState}, ${addressZIP}`,
+            address: `${addressLine1}, ${addressLine2 + ', ' || ''}${addressCity}, ${addressState}, ${addressZIP}`,
             cartItems: cart,
             userID: userID
             
