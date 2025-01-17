@@ -141,12 +141,17 @@ document.addEventListener('DOMContentLoaded', function () {
       }));
    }
 
-   function processPayment(totalAmount) {
-      // do nothing for now
-      //   alert(`Simulating Payment of $${totalAmount.toFixed(2)}. Payment Successful!`);
-      // localStorage.removeItem('cartData');
-      //   sessionStorage.removeItem('cart');
-      //   window.location.href = '/'; // Redirect to home page
+   async function processPayment(totalAmount, event) {
+      // event.preventDefault()
+      // const orderData = localStorage.getItem('formData' || '{}')
+      // console.log(orderData.data)
+      // try {
+      //    // const response = fetch('/user/checkout', {
+      //    //    body: 
+      //    // })
+      // } catch (err) {
+      //    console.error(err)
+      // }
    }
 
 
@@ -191,55 +196,49 @@ document.addEventListener('DOMContentLoaded', function () {
       }
    }
 
-   let allowSubmit = false
-   checkoutForm.addEventListener('submit', async (e) => {
+   // checkoutForm.addEventListener('submit', async (e) => {
 
-      const formData = {
-         firstName: document.getElementById('firstName').value,
-         lastName: document.getElementById('lastName').value,
-         phoneNumber: document.getElementById('phoneNumber').value,
-         emailAddress: document.getElementById('emailAddress').value,
-         addressLine1: document.getElementById('addressLine1').value,
-         addressLine2: document.getElementById('addressLine2').value,
-         city: document.getElementById('city').value,
-         state: document.getElementById('state').value,
-         zipCode: document.getElementById('zipCode').value,
-         cart: [] // Initialize cart as empty array
-      };
+      // const formData = {
+      //    firstName: document.getElementById('firstName').value,
+      //    lastName: document.getElementById('lastName').value,
+      //    phoneNumber: document.getElementById('phoneNumber').value,
+      //    emailAddress: document.getElementById('emailAddress').value,
+      //    addressLine1: document.getElementById('addressLine1').value,
+      //    addressLine2: document.getElementById('addressLine2').value,
+      //    city: document.getElementById('city').value,
+      //    state: document.getElementById('state').value,
+      //    zipCode: document.getElementById('zipCode').value,
+      //    cart: [] // Initialize cart as empty array
+      // };
 
-      let totalAmount = 0;
-      if (Object.keys(cart).length > 0) {
-         const products = await Promise.all(Object.keys(cart).map(productId => {
-            return fetch(`/user/product/${productId}`)
-               .then(response => {
-                  if (!response.ok) {
-                     throw new Error(`HTTP Error ${response.status}`)
-                  }
-                  return response.json()
-               })
-         }))
+      // let totalAmount = 0;
+      // if (Object.keys(cart).length > 0) {
+      //    const products = await Promise.all(Object.keys(cart).map(productId => {
+      //       return fetch(`/user/product/${productId}`)
+      //          .then(response => {
+      //             if (!response.ok) {
+      //                throw new Error(`HTTP Error ${response.status}`)
+      //             }
+      //             return response.json()
+      //          })
+      //    }))
 
-         products.forEach((product) => {
-            const cartItem = {
-               product_id: product._id,
-               product_quantity: cart[product._id],
-               product_unit_price: product.price,
-            }
-            formData.cart.push(cartItem);
-            totalAmount += product.price * cart[product._id];
-         })
-         totalAmount = totalAmount * (1 + SALES_TAX_RATE)
+      //    products.forEach((product) => {
+      //       const cartItem = {
+      //          product_id: product._id,
+      //          product_quantity: cart[product._id],
+      //          product_unit_price: product.price,
+      //       }
+      //       formData.cart.push(cartItem);
+      //       totalAmount += product.price * cart[product._id];
+      //    })
+      //    totalAmount = totalAmount * (1 + SALES_TAX_RATE)
 
-      }
-      persistFormData(formData);
-      persistCartData(cart, totalAmount);
-      processPayment(totalAmount)
-
-      if (!allowSubmit) {
-         e.preventDefault()
-         allowSubmit = true
-      }
-   })
+      // }
+      // persistFormData(formData);
+      // persistCartData(cart, totalAmount);
+      // await processPayment(totalAmount, e)
+   // })
    const storedFormData = retrieveFormData()
    const storedCartData = retrieveCartData();
    if (storedFormData) {

@@ -35,6 +35,7 @@ router.route('/checkout')
         })
     })
     .post(async (req, res) => {
+        console.log(req.body)
         return
     })
 export default router;

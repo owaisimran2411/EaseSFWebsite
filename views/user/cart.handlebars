@@ -7,66 +7,104 @@
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="firstName">First Name</label>
-                <input type="text" class="form-control" id="firstName" required>
+                <input type="text" class="form-control" id="firstName" required name="firstName">
             </div>
             <div class="form-group col-md-6">
                 <label for="lastName">Last Name</label>
-                <input type="text" class="form-control" id="lastName" required>
+                <input type="text" class="form-control" id="lastName" required name="lastName">
             </div>
         </div>
-            <div class="form-row">
+        <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="phoneNumber">Phone Number</label>
-                <input type="tel" class="form-control" id="phoneNumber" required>
-                </div>
+                <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber">
+            </div>
             <div class="form-group col-md-6">
                 <label for="emailAddress">Email Address</label>
-                <input type="email" class="form-control" id="emailAddress" required>
-                </div>
+                <input type="email" class="form-control" id="emailAddress" required name="emailAddress">
             </div>
-            <h2>Delivery Information</h2>
-            <div class="form-group">
-                <label for="addressLine1">Address Line 1</label>
-                <input type="text" class="form-control" id="addressLine1" required>
+        </div>
+        <h2>Delivery Information</h2>
+        <div class="form-group">
+            <label for="addressLine1">Address Line 1</label>
+            <input type="text" class="form-control" id="addressLine1" required name="addressLine1">
+        </div>
+        <div class="form-group">
+            <label for="addressLine2">Address Line 2 (Optional)</label>
+            <input type="text" class="form-control" id="addressLine2" name="addressLine2">
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label for="city">City</label>
+                <input type="text" class="form-control" id="city" required name="addressCity">
             </div>
-            <div class="form-group">
-                <label for="addressLine2">Address Line 2 (Optional)</label>
-                <input type="text" class="form-control" id="addressLine2">
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-4">
-                    <label for="city">City</label>
-                    <input type="text" class="form-control" id="city" required>
-                </div>
-                <div class="form-group col-md-4">
+            <div class="form-group col-md-4">
                 <label for="state">State</label>
-                <select class="form-control" id="state" required>
+                <select class="form-control" id="state" required name="addressState">
                     <option value="" disabled selected>Select a state</option>
                 </select>
-                </div>
-                <div class="form-group col-md-4">
-                    <label for="zipCode">ZIP Code</label>
-                    <input type="text" class="form-control" id="zipCode" required>
-                </div>
             </div>
-
-            <h2>Order Information</h2>
-            <div class="row" id="order-items">
+            <div class="form-group col-md-4">
+                <label for="zipCode">ZIP Code</label>
+                <input type="text" class="form-control" id="zipCode" required name="addressZipCode">
             </div>
+        </div>
 
-            <h2>Bill</h2>
-            <div id="bill-summary"></div>
-            <button type="submit" class="btn btn-primary">Place Order</button>
-        </form>
+        <h2>Order Information</h2>
+        <div class="row" id="order-items">
+        </div>
+
+        <h2>Bill</h2>
+        <div id="bill-summary"></div>
+        <button type="submit" class="btn btn-primary">Place Order</button>
+    </form>
 </div>
 <script src="/public/js/checkoutScript.js"></script>
+<script>
+    document.getElementById('checkout-form').addEventListener('submit', async (e) => {
+        e.preventDefault()
+
+        const formData = new URLSearchParams();
+
+
+
+        try {
+            formData.append('firstName', document.getElementById('firstName').value)
+            formData.append('lastName', document.getElementById('lastName').value)
+            formData.append('phoneNumber', document.getElementById('phoneNumber').value)
+            formData.append('emailAddress', document.getElementById('emailAddress').value)
+            formData.append('addressLine1', document.getElementById('addressLine1').value)
+
+            if (document.getElementById('addressLine2').value !== '')
+                formData.append('addressLine2', document.getElementById('addressLine2').value)
+
+            formData.append('city', document.getElementById('city').value)
+            formData.append('state', document.getElementById('state').value)
+            formData.append('zipCode', document.getElementById('zipCode').value)
+
+            let cart = JSON.parse(sessionStorage.getItem('cart') || '{}');
+
+           
+
+            formData.append('cart', JSON.stringify(cart))
+            const response = await fetch('/user/checkout', {
+                method: 'POST',
+                body: formData
+            })
+
+
+        } catch (err) {
+            console.error(err)
+        }
+    })
+</script>
 {{else}}
 <div class="container">
     <h1>Your Shopping Cart</h1>
     <div class="row" id="cart-items">
         <!-- Cart items will be dynamically added here -->
     </div>
-        <div class="cart-summary">
+    <div class="cart-summary">
         <h2>Cart Summary</h2>
         <div id="cart-total"></div>
     </div>
