@@ -75,10 +75,30 @@ router.route("/home")
         });
     });
 
-router.route('/order')
+router.route('/orders')
     .get(async (req, res) => {
-
+        try {
+            const orderData = await ordersData.searchOrders({})
+            
+            return res.render('admin/orders', {
+                docTitle: 'Admin - orders',
+                orders: orderData
+            })
+        } catch (err) {
+            console.error(err)
+        }
     })
+router.route('/orders/:id')
+.get(async (req, res) => {
+    try {
+        const orderData = await ordersData.searchOrders({})
+        return res.json(orderData)
+    } catch(err) {
+        console.error(err)
+    }
+})
+
+    
 
 router.route("/products")
     .get(async (req, res) => {
