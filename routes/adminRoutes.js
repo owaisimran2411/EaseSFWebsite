@@ -1,7 +1,7 @@
 import { Router } from "express";
 import helperMethods from "./../helpers.js";
 // import { products, categories } from "./../data/testing.js";
-import { categoryData, productData } from "./../data/index.js";
+import { categoryData, productData, ordersData } from "./../data/index.js";
 
 import multer from "multer";
 import path from "path";
@@ -75,6 +75,11 @@ router.route("/home")
         });
     });
 
+router.route('/order')
+    .get(async (req, res) => {
+
+    })
+
 router.route("/products")
     .get(async (req, res) => {
         const products = await productData.searchProduct();
@@ -105,19 +110,19 @@ router.route('/category/:categoryID')
     .post(async (req, res) => {
         try {
             const categoryUpdate = await categoryData.updateCategory(req.params.categoryID, req.body.name)
-            if(categoryUpdate === true) {
+            if (categoryUpdate === true) {
                 return res.status(200).json("Success")
             }
-        } catch(err) {
+        } catch (err) {
             return res.json(err)
         }
     })
 
 router.route("/products/delete/:id").get(async (req, res) => {
-    const id = req.params.id;   
+    const id = req.params.id;
 
     try {
-        const product = await productData.deleteProduct(id)       
+        const product = await productData.deleteProduct(id)
         return res.redirect("/admin/products");
     } catch (error) {
         return res.status(500).send("Error deleting product");
@@ -130,7 +135,7 @@ router.route("/product/edit-product/:id")
     .get(async (req, res) => {
         try {
             const id = req.params.id;
-            const product = await productData.searchProduct({_id: id});
+            const product = await productData.searchProduct({ _id: id });
             const categories = await categoryData.searchCategories()
             return res.render('admin/editExistingProduct_S1', {
                 docTitle: "Admin - Edit Product - Step 1",
@@ -167,13 +172,13 @@ router.route("/product/edit-product/step3/:id")
         try {
             const oldImagePath = req.body.oldImagePath;
             const newImage = req.file;
-            
+
             if (oldImagePath) {
                 try {
                     fs.unlink(`${process.cwd()}/${oldImagePath}`, (err) => {
                         if (err) console.error('Error deleting old image:', err);
                     });
-                } catch(error) {
+                } catch (error) {
                     console.error(error)
                 }
             }
@@ -193,9 +198,9 @@ router.route("/product/edit-product/step3/:id")
             });
         } catch (error) {
             console.error('Error handling image update:', error);
-            return res.status(500).json({ 
-                success: false, 
-                message: 'Failed to update image' 
+            return res.status(500).json({
+                success: false,
+                message: 'Failed to update image'
             });
         }
     });
@@ -235,7 +240,7 @@ router.route("/products/add-product/step3")
         });
     }).post(upload.single('coverImage'), async (req, res) => {
         let coverImage = "";
-        if(req.file){
+        if (req.file) {
             coverImage = `/public/uploads/${req.file.filename}`;
             // res.setHeader('x-filename', coverImage);
             const productName = req.body.name;
@@ -246,7 +251,7 @@ router.route("/products/add-product/step3")
             const productHashtags = req.body.hashtags;
             const productCoverImage = coverImage;
 
-            
+
             const updatedProduct = await productData.createProduct(productName, productPrice, productCategory, productQuantity, productDescription, productHashtags, productCoverImage, []);
             return res.status(200).send(`
                 <script>
