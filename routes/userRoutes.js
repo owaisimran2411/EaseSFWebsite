@@ -1,6 +1,6 @@
 import { Router } from "express";
 import helperMethods from "./../helpers.js";
-import { productData, ordersData } from "./../data/index.js";
+import { productData, ordersData, usersData } from "./../data/index.js";
 
 const router = Router();
 
@@ -50,7 +50,14 @@ router.route('/signup')
         })
     })
     .post(async (req, res) => {
-        
+        try {
+            const {firstName, lastName, emailAddress, phoneNumber, password} = req.body
+            // console.log(firstName)
+            const insert = await usersData.createUser(firstName, lastName, emailAddress, phoneNumber, password)
+            return res.status(200).json(insert)
+        } catch(err) {
+            return res.status(400).json({error: err})
+        }
     })
 
 router.route('/product/:id')
