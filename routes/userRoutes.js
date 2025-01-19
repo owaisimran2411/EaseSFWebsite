@@ -23,9 +23,9 @@ router.route('/')
         const products = await productData.searchProduct(
             {
                 $or: [
-                    {name: searchFilter},
-                    {description: searchFilter},
-                    {hashtags: searchFilter}
+                    { name: searchFilter },
+                    { description: searchFilter },
+                    { hashtags: searchFilter }
                 ]
                 // hashtags: searchFilter
             }
@@ -40,6 +40,16 @@ router.route('/')
         } else {
             return res.redirect('/user')
         }
+
+    })
+
+router.route('/signup')
+    .get(async (req, res) => {
+        return res.render('user/signup', {
+            docTitle: 'User Registration'
+        })
+    })
+    .post(async (req, res) => {
         
     })
 
