@@ -13,6 +13,35 @@ router.route('/')
             products: products
         })
     })
+    .post(async (req, res) => {
+        let searchFilter = {}
+        if (req.body.productNameFilter !== '') {
+            searchFilter = { $regex: req.body.productNameFilter, $options: 'i' }
+        } else {
+            searchFilter = { $regex: '', $options: 'i' }
+        }
+        const products = await productData.searchProduct(
+            {
+                $or: [
+                    {name: searchFilter},
+                    {description: searchFilter},
+                    {hashtags: searchFilter}
+                ]
+                // hashtags: searchFilter
+            }
+        )
+
+        if (products.length !== 0) {
+            console.log(products)
+            return res.render('user/product', {
+                docTitle: 'Products',
+                products: products
+            })
+        } else {
+            return res.redirect('/user')
+        }
+        
+    })
 
 router.route('/product/:id')
     .get(async (req, res) => {
@@ -69,6 +98,7 @@ router.route('/checkout')
                 addressLine1, addressLine2, addressCity, addressState, addressZipCode, cartObject, userId
             )
             console.log(order)
+            return res.redirect('/user')
         } catch (err) {
             return res.status(404).json({ error: err })
         }

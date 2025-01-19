@@ -1,4 +1,12 @@
 <div class="container">
+    <br>
+    
+    <form method="post">
+        <label for="product-name" class="form-label"></label>
+        <input type="text" name="productNameFilter" class="form-input">
+        <input type="submit" value="Search">
+        <br>
+    </form>
     <div class="row" id="productContainer">
         {{#each products}}
             <div class="col-md-3 mb-4">
