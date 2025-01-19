@@ -11,12 +11,12 @@
         </thead>
         <tbody id="order-table-body">
             {{#each orders}}
-                <tr data-order-id="{{this._id}}">
+                <tr>
                     <td>{{this.firstName}} {{this.lastName}}</td>
                     <td></td>
                     <td>{{this.orderDate}}</td>
                     <td>
-                        <button id='view-order-details' class="btn-primary" data-order-id="{{this._id}}">View details</button>
+                        <button id='' class="btn-primary view-order-details" data-order-id="{{this._id}}">View details</button>
                     </td>
                 </tr>
             {{/each}}

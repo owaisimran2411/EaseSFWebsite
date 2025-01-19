@@ -91,7 +91,8 @@ router.route('/orders')
 router.route('/orders/:id')
 .get(async (req, res) => {
     try {
-        const orderData = await ordersData.searchOrders({})
+        console.log(req.params.id)
+        const orderData = await ordersData.searchOrders({_id: req.params.id})
         return res.json(orderData)
     } catch(err) {
         console.error(err)
