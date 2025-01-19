@@ -45,6 +45,7 @@ router.route('/checkout')
                 const prod = await productData.searchProduct({ _id: Object.keys(cartItems)[i] })
                 cartObject.push({
                     productID: prod[0]._id,
+                    productName: prod[0].name,
                     quantity: cartItems[Object.keys(cartItems)[i]],
                     price: Number(prod[0].price)
                 })
