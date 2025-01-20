@@ -7,6 +7,7 @@ const router = Router();
 // Route goes here
 router.route('/')
     .get(async (req, res) => {
+        console.log(req.session)
         const products = await productData.searchProduct()
         return res.render('user/product', {
             docTitle: 'Products',
@@ -32,7 +33,7 @@ router.route('/')
         )
 
         if (products.length !== 0) {
-            console.log(products)
+            // console.log(products)
             return res.render('user/product', {
                 docTitle: 'Products',
                 products: products
@@ -43,6 +44,34 @@ router.route('/')
 
     })
 
+router.route('/login')
+    .get(async (req, res) => {
+        return res.render('user/login', {
+            docTitle: 'Login'
+        })
+    })
+    .post(async (req, res) => {
+        try {
+            const {emailAddress, password} = req.body
+            const userLoginRequest = await usersData.searchUser(emailAddress, password)
+            try {
+                console.log(userLoginRequest)
+                // helperMethods.primitiveTypeValidation(userLoginRequest, 'object')
+                req.session.user = userLoginRequest
+                console.log(userLoginRequest)
+                if('role' in userLoginRequest) {
+                    return res.redirect('/admin')
+                } else {
+                    return res.redirect('/user')
+                }
+            } catch (err) {
+                console.log('incorrect username/password')
+            }
+        } catch (err) {
+            return res.json({error: err})
+        }
+    })
+
 router.route('/signup')
     .get(async (req, res) => {
         return res.render('user/signup', {
@@ -51,12 +80,12 @@ router.route('/signup')
     })
     .post(async (req, res) => {
         try {
-            const {firstName, lastName, emailAddress, phoneNumber, password} = req.body
+            const { firstName, lastName, emailAddress, phoneNumber, password } = req.body
             // console.log(firstName)
             const insert = await usersData.createUser(firstName, lastName, emailAddress, phoneNumber, password)
             return res.status(200).json(insert)
-        } catch(err) {
-            return res.status(400).json({error: err})
+        } catch (err) {
+            return res.status(400).json({ error: err })
         }
     })
 

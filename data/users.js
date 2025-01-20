@@ -24,8 +24,42 @@ const createUser = async (firstName, lastName, emailAddress, phoneNumber, passwo
         throw new Error(err)
     }
 }
+
+const searchUser = async (emailAddress, password) => {
+    try {
+        const userCollection = await users();
+        const userInformation = await userCollection.find({
+            emailAddress: emailAddress
+        }).toArray()
+
+        if(userInformation.length>0) {
+            // console.log(userInformation[0])
+            const passwordCheck = await bcrpyt.compare(password, userInformation[0].password)
+            if (!passwordCheck) {
+                console.log(password)
+                throw 'Username/Password incorrect'
+            } else {
+                helperMethods.configureDotEnv()
+                const returnObject = {}
+                const hashedID = await helperMethods.encyptValue(userInformation[0]._id, process.env.ENCRYPTION_KEY)
+                returnObject.userID = hashedID
+                if(userInformation[0].role) {
+                    returnObject.role = 'admin'
+                }
+                return returnObject
+            }
+        } else {
+            return 'Username/Password incorrect'
+        }
+
+
+    } catch (err) {
+        throw new Error(err)
+    }
+}
 const methods = {
-    createUser
+    createUser,
+    searchUser
 };
 
 export default methods;

@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 import xss from "xss";
 import { ObjectId } from "mongodb";
+import Cryptr from "cryptr";
 
 /**
  * Function to configure read from .env file
@@ -77,12 +78,23 @@ const validateObjectID = async (value) => {
 	return ObjectId.isValid(value);
 };
 
+const encyptValue = async (value, SecretKey) => {
+	const cryptr = new Cryptr(SecretKey)
+	return cryptr.encrypt(value)
+}
+
+const decryptValue = async (value, SecretKey) => {
+	const cryptr = new Cryptr(SecretKey)
+	return cryptr.decrypt(value)
+}
 const methods = {
 	configureDotEnv,
 	argumentProvidedValidation,
 	primitiveTypeValidation,
 	generateObjectID,
 	validateObjectID,
+	encyptValue,
+	decryptValue
 };
 
 export default methods;

@@ -24,6 +24,60 @@ const rewriteUnsupportedBrowserMethods = (req, res, next) => {
 };
 
 const app = express();
+
+app.use(
+	session({
+		cookie: {
+			maxAge: 60000
+		},
+		resave: false,
+		saveUninitialized: false,
+		name: 'AuthenticationState',
+		secret: "this is a secret"
+	})
+)
+app.use('/', async (req, res, next) => {
+	if (req.path === '/') {
+		if (req.session.user && req.session.user.role) {
+			// const redirectPath = (req.session.user.role === 'admin' ? '/admin' : '/user')
+			return res.redirect(`/${req.session.user.role}`)
+		} else if (req.session.user) {
+			return res.redirect('/user')
+		} else {
+			return res.redirect('/user/login')
+		}
+	} else {
+		next()
+	}
+})
+app.use('/user/login', async (req, res, next) => {
+	if (req.method == 'GET') {
+		if (req.session.user && req.session.user.role) {
+			return res.redirect(`/${req.session.user.role}`)
+		} else if (req.session.user) {
+			return res.redirect('/user')
+		} else {
+			next()
+		}
+	} else {
+		next()
+	}
+})
+app.use('/user/signup', async (req, res, next) => {
+	if (req.method == 'GET') {
+		if (req.session.user && req.session.user.role) {
+			return res.redirect(`/${req.session.user.role}`)
+		} else if (req.session.user) {
+			return res.redirect('/user')
+		} else {
+			next()
+		}
+	} else {
+		next()
+	}
+	// next()
+
+})
 const staticDir = express.static("public");
 
 const handlebarsInstance = exphbs.create({
@@ -44,7 +98,7 @@ const handlebarsInstance = exphbs.create({
 					return options.inverse(this);
 			}
 		},
-		eq: function(a, b) {
+		eq: function (a, b) {
 			return a === b;
 		},
 		partialsDir: ["views/partials/"],
