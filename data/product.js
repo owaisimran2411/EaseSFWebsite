@@ -59,7 +59,7 @@ const searchProduct = async (searchParams) => {
     }
     const productCollection = await product();
     const products = await productCollection.find(queryParams).toArray();
-    console.log(products)
+    // console.log(products)
     return products;
 };
 /**

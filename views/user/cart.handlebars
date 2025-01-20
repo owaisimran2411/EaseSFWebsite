@@ -7,21 +7,21 @@
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="firstName">First Name</label>
-                <input type="text" class="form-control" id="firstName" required name="firstName">
+                <input type="text" class="form-control" id="firstName" required name="firstName" value={{userProfile.firstName}}>
             </div>
             <div class="form-group col-md-6">
                 <label for="lastName">Last Name</label>
-                <input type="text" class="form-control" id="lastName" required name="lastName">
+                <input type="text" class="form-control" id="lastName" required name="lastName" value={{userProfile.lastName}}>
             </div>
         </div>
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="phoneNumber">Phone Number</label>
-                <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber">
+                <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber" value={{userProfile.phoneNumber}}>
             </div>
             <div class="form-group col-md-6">
                 <label for="emailAddress">Email Address</label>
-                <input type="email" class="form-control" id="emailAddress" required name="emailAddress">
+                <input type="email" class="form-control" id="emailAddress" required name="emailAddress" value={{userProfile.emailAddress}}>
             </div>
         </div>
         <h2>Delivery Information</h2>

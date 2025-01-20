@@ -57,9 +57,37 @@ const searchUser = async (emailAddress, password) => {
         throw new Error(err)
     }
 }
+
+const preFillUserData = async (userID) => {
+    try {
+        helperMethods.configureDotEnv()
+        const decryptedID = await helperMethods.decryptValue(userID, process.env.ENCRYPTION_KEY)
+        const userCollection = await users()
+        const userInformation = await userCollection.find(
+            { _id: decryptedID }, // Query filter
+            { 
+                projection: { 
+                    firstName: 1, 
+                    lastName: 1, 
+                    emailAddress: 1, 
+                    phoneNumber: 1, 
+                    _id: 1, 
+                } 
+            }
+        ).toArray();
+        if(userInformation.length>0) {
+            return userInformation[0]
+        } else {
+            throw new Error('User not found')
+        }
+    } catch (err) {
+        throw new Error(err)
+    }
+}
 const methods = {
     createUser,
-    searchUser
+    searchUser,
+    preFillUserData
 };
 
 export default methods;

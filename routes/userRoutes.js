@@ -55,10 +55,10 @@ router.route('/login')
             const {emailAddress, password} = req.body
             const userLoginRequest = await usersData.searchUser(emailAddress, password)
             try {
-                console.log(userLoginRequest)
+                // console.log(userLoginRequest)
                 // helperMethods.primitiveTypeValidation(userLoginRequest, 'object')
                 req.session.user = userLoginRequest
-                console.log(userLoginRequest)
+                // console.log(userLoginRequest)
                 if('role' in userLoginRequest) {
                     return res.redirect('/admin')
                 } else {
@@ -104,10 +104,27 @@ router.route('/cart')
 
 router.route('/checkout')
     .get(async (req, res) => {
-        return res.render('user/cart', {
-            docTitle: 'Checkout',
-            checkout: true
-        })
+        if(req.session.user) {
+            console.log("I am here")
+            try {
+                const userData = await usersData.preFillUserData(req.session.user.userID)
+                console.log(userData)
+                return res.render('user/cart', {
+                    docTitle: 'Checkout',
+                    checkout: true,
+                    userProfile: userData
+                })
+            } catch (err) {
+                console.error(err)
+                return
+            }
+        } else {
+            return res.render('user/cart', {
+                docTitle: 'Checkout',
+                checkout: true
+            })
+        }
+        
     })
     .post(async (req, res) => {
         console.log(req.body)

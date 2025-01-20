@@ -28,7 +28,7 @@ const app = express();
 app.use(
 	session({
 		cookie: {
-			maxAge: 60000
+			maxAge: 60000000
 		},
 		resave: false,
 		saveUninitialized: false,
