@@ -211,7 +211,7 @@ router.route("/product/edit-product/step3/:id")
                 quantity: req.body.quantity,
                 description: req.body.description,
                 hashtags: req.body.hashtags,
-                brandName: req.body.name,
+                brandName: req.body.brand,
                 coverImage: req.body.oldImagePath ? `/public/uploads/${newImage.filename}` : req.body.coverImage
             }
             const updateProduct = await productData.updateProduct(req.params.id, updateObject)
