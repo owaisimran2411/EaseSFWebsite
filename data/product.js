@@ -15,7 +15,7 @@ import helperMethods from "./../helpers.js";
  * @throws {Error} Throws an error if product creation fails
  */
 
-const createProduct = async (productName, productPrice, productCategory, productQuantity, productDescription, productHashtags, productCoverImage, productImages) => {
+const createProduct = async (productName, productPrice, productCategory, productQuantity, productDescription, productHashtags, productCoverImage, productImages, brandName) => {
     // TODO: Add arguments validation and primitive type validation
     
     try {
@@ -30,7 +30,8 @@ const createProduct = async (productName, productPrice, productCategory, product
             description: productDescription,
             hashtags: productHashtags,
             coverImage: productCoverImage,
-            productImages: productImages
+            productImages: productImages,
+            brandName: brandName
         };
         const newInsertInformation = await productCollection.insertOne(newProduct);
         return newInsertInformation.insertedId;

@@ -211,6 +211,7 @@ router.route("/product/edit-product/step3/:id")
                 quantity: req.body.quantity,
                 description: req.body.description,
                 hashtags: req.body.hashtags,
+                brandName: req.body.name,
                 coverImage: req.body.oldImagePath ? `/public/uploads/${newImage.filename}` : req.body.coverImage
             }
             const updateProduct = await productData.updateProduct(req.params.id, updateObject)
@@ -271,9 +272,9 @@ router.route("/products/add-product/step3")
             const productDescription = req.body.description;
             const productHashtags = req.body.hashtags;
             const productCoverImage = coverImage;
+            const productBrandName = req.body.brand
 
-
-            const updatedProduct = await productData.createProduct(productName, productPrice, productCategory, productQuantity, productDescription, productHashtags, productCoverImage, []);
+            const updatedProduct = await productData.createProduct(productName, productPrice, productCategory, productQuantity, productDescription, productHashtags, productCoverImage, [], productBrandName);
             return res.status(200).send(`
                 <script>
                     sessionStorage.removeItem('productData')
