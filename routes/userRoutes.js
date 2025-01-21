@@ -155,7 +155,7 @@ router.route('/checkout')
             const addressCity = req.body.city
             const addressState = req.body.state
             const addressZipCode = req.body.zipCode
-            const userId = req.body.userID
+            const userId = req.body.userID || 'null'
             const order = await ordersData.createOrder(
                 firstName, lastName, phoneNumber, emailAddress,
                 addressLine1, addressLine2, addressCity, addressState, addressZipCode, cartObject, userId
@@ -165,6 +165,5 @@ router.route('/checkout')
         } catch (err) {
             return res.status(404).json({ error: err })
         }
-        return
     })
 export default router;

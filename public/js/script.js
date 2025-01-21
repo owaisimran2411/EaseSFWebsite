@@ -82,22 +82,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 return response.json();
             })
             .then(product => {
+                console.log(product)
                 modalContent.innerHTML = `
-                     <h2>${product.name}</h2>
-                      <img src="${product.coverImage}" style="max-width: 100%; height: auto; max-height: 300px" alt="${product.name}">
-                     <p>${product.description}</p>
-                     <h4>Details:</h4>
-                        <ul>
-                        ${Object.entries(product.details).map(([key, value]) => {
-                    if (Array.isArray(value)) {
-                        return `<li><strong>${key}:</strong> ${value.join(', ')}</li>`
-                    } else {
-                        return `<li><strong>${key}:</strong> ${value}</li>`
-                    }
-                }).join('')}
-                      </ul>
-                      <p class="product-price" >Price: $${product.price}</p>
-                   `;
+                        <h2>${product.name}</h2>
+                        <img src="${product.coverImage}" style="max-width: 100%; height: auto; max-height: 300px" alt="${product.name}">
+                        <p>${product.description}</p>
+                        
+                            <p class="product-price" >Price: $${product.price}</p>
+                        `;
                 updateCartButton(productId, `modal-cart-controls`);
                 modalCartControls.setAttribute('data-product-id', productId)
             })
