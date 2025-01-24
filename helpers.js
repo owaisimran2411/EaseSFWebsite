@@ -87,6 +87,11 @@ const decryptValue = async (value, SecretKey) => {
 	const cryptr = new Cryptr(SecretKey)
 	return cryptr.decrypt(value)
 }
+
+const checkLoginStatus = async (req) => {
+	return (req.session && req.session.user && req.session.user.userID ? true : false)
+}
+
 const methods = {
 	configureDotEnv,
 	argumentProvidedValidation,
@@ -94,7 +99,8 @@ const methods = {
 	generateObjectID,
 	validateObjectID,
 	encyptValue,
-	decryptValue
+	decryptValue,
+	checkLoginStatus
 };
 
 export default methods;

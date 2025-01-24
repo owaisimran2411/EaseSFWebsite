@@ -33,10 +33,8 @@ const searchUser = async (emailAddress, password) => {
         }).toArray()
 
         if(userInformation.length>0) {
-            // console.log(userInformation[0])
             const passwordCheck = await bcrpyt.compare(password, userInformation[0].password)
             if (!passwordCheck) {
-                console.log(password)
                 throw 'Username/Password incorrect'
             } else {
                 helperMethods.configureDotEnv()

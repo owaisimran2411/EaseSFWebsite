@@ -9,9 +9,12 @@ router.route('/')
     .get(async (req, res) => {
         console.log(req.session)
         const products = await productData.searchProduct()
+        const loginStatus = await helperMethods.checkLoginStatus(req)
+        console.log(loginStatus)
         return res.render('user/product', {
             docTitle: 'Products',
-            products: products
+            products: products,
+            isLoggedIn: loginStatus
         })
     })
     .post(async (req, res) => {
@@ -46,8 +49,11 @@ router.route('/')
 
 router.route('/login')
     .get(async (req, res) => {
+        const loginStatus = await helperMethods.checkLoginStatus(req)
+        console.log("Here",loginStatus)
         return res.render('user/login', {
-            docTitle: 'Login'
+            docTitle: 'Login',
+            isLoggedIn: loginStatus
         })
     })
     .post(async (req, res) => {
@@ -74,8 +80,11 @@ router.route('/login')
 
 router.route('/signup')
     .get(async (req, res) => {
+        const loginStatus = await helperMethods.checkLoginStatus(req)
+        console.log(loginStatus)
         return res.render('user/signup', {
-            docTitle: 'User Registration'
+            docTitle: 'User Registration',
+            isLoggedIn: loginStatus
         })
     })
     .post(async (req, res) => {
