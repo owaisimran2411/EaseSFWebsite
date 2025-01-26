@@ -59,19 +59,31 @@ const router = Router();
  */
 
 router.route("/")
-    .get((req, res) => {
-        return res.render("admin/index", {
-            docTitle: "Admin - Login"
-        });
+    .get(async (req, res) => {
+        if (req.session && req.session.user && req.session.user.role) {
+            const loginStatus = await helperMethods.checkLoginStatus(req)
+            const role = await helperMethods.checkUserRole(req)
+            return res.render("admin/index", {
+                docTitle: "Admin - Login",
+                isLoggedIn: loginStatus,
+                role: role
+            });
+        } else {
+            return res.redirect('/user/login')
+        }
     })
     .post((req, res) => {
         return res.redirect("/admin/home");
     });
 
 router.route("/home")
-    .get((req, res) => {
+    .get(async (req, res) => {
+        const loginStatus = await helperMethods.checkLoginStatus(req)
+        const role = await helperMethods.checkUserRole(req)
         return res.render("admin/home", {
-            docTitle: "Admin - Home"
+            docTitle: "Admin - Home",
+            isLoggedIn: loginStatus,
+            role: role
         });
     });
 
@@ -79,42 +91,53 @@ router.route('/orders')
     .get(async (req, res) => {
         try {
             const orderData = await ordersData.searchOrders({})
-            
+            const loginStatus = await helperMethods.checkLoginStatus(req)
+            const role = await helperMethods.checkUserRole(req)
             return res.render('admin/orders', {
                 docTitle: 'Admin - orders',
-                orders: orderData
+                orders: orderData,
+                isLoggedIn: loginStatus,
+                role: role
             })
         } catch (err) {
             console.error(err)
         }
     })
 router.route('/orders/:id')
-.get(async (req, res) => {
-    try {
-        console.log(req.params.id)
-        const orderData = await ordersData.searchOrders({_id: req.params.id})
-        return res.json(orderData)
-    } catch(err) {
-        console.error(err)
-    }
-})
+    .get(async (req, res) => {
+        try {
+            console.log(req.params.id)
+            const orderData = await ordersData.searchOrders({ _id: req.params.id })
+            return res.json(orderData)
+        } catch (err) {
+            console.error(err)
+        }
+    })
 
-    
+
 
 router.route("/products")
     .get(async (req, res) => {
         const products = await productData.searchProduct();
+        const loginStatus = await helperMethods.checkLoginStatus(req)
+        const role = await helperMethods.checkUserRole(req)
         return res.render("admin/products", {
             docTitle: "Admin - Products",
-            products: products
+            products: products,
+            isLoggedIn: loginStatus,
+            role: role
         });
     });
 
 router.route('/category')
     .get(async (req, res) => {
         const categories = await categoryData.searchCategories()
+        const loginStatus = await helperMethods.checkLoginStatus(req)
+        const role = await helperMethods.checkUserRole(req)
         return res.render('admin/category', {
             docTitle: 'Admin - Categories',
+            isLoggedIn: loginStatus,
+            role: role,
             categories: categories
         })
     })
@@ -158,8 +181,12 @@ router.route("/product/edit-product/:id")
             const id = req.params.id;
             const product = await productData.searchProduct({ _id: id });
             const categories = await categoryData.searchCategories()
+            const loginStatus = await helperMethods.checkLoginStatus(req)
+            const role = await helperMethods.checkUserRole(req)
             return res.render('admin/editExistingProduct_S1', {
                 docTitle: "Admin - Edit Product - Step 1",
+                isLoggedIn: loginStatus,
+                role: role,
                 productInfoString: JSON.stringify(product[0]),
                 categories: categories
             });
@@ -171,8 +198,12 @@ router.route("/product/edit-product/:id")
 router.route("/product/edit-product/step2/:id")
     .get(async (req, res) => {
         try {
+            const loginStatus = await helperMethods.checkLoginStatus(req)
+            const role = await helperMethods.checkUserRole(req)
             return res.render('admin/editExistingProduct_S2', {
-                docTitle: "Admin - Edit Product - Step 2"
+                docTitle: "Admin - Edit Product - Step 2",
+                isLoggedIn: loginStatus,
+                role: role
             });
         } catch (error) {
             return res.status(500).send("Error loading edit product step 2");
@@ -182,8 +213,12 @@ router.route("/product/edit-product/step2/:id")
 router.route("/product/edit-product/step3/:id")
     .get(async (req, res) => {
         try {
+            const loginStatus = await helperMethods.checkLoginStatus(req)
+            const role = await helperMethods.checkUserRole(req)
             return res.render('admin/editExistingProduct_S3', {
-                docTitle: "Admin - Edit Product - Step 3"
+                docTitle: "Admin - Edit Product - Step 3",
+                isLoggedIn: loginStatus,
+                role: role
             });
         } catch (error) {
             return res.status(500).send("Error loading edit product step 3");
@@ -231,12 +266,16 @@ router.route("/product/edit-product/step3/:id")
 router.route("/products/add-product")
     .get(async (req, res) => {
         const categories = await categoryData.searchCategories({})
+        const loginStatus = await helperMethods.checkLoginStatus(req)
+        const role = await helperMethods.checkUserRole(req)
         return res.render("admin/addNewProduct_S1", {
             docTitle: "Admin - Add Product - Step 1",
+            isLoggedIn: loginStatus,
+            role: role,
             categories: categories
         });
     })
-    .post((req, res) => {
+    .post(async (req, res) => {
         const productData = JSON.stringify(req.body);
         return res.send(
             `<script>
@@ -247,18 +286,26 @@ router.route("/products/add-product")
     });
 
 router.route("/products/add-product/step2")
-    .get((req, res) => {
+    .get(async (req, res) => {
+        const loginStatus = await helperMethods.checkLoginStatus(req)
+        const role = await helperMethods.checkUserRole(req)
         return res.render("admin/addNewProduct_S2", {
-            docTitle: "Admin - Add Product - Step 2"
+            docTitle: "Admin - Add Product - Step 2",
+            isLoggedIn: loginStatus,
+            role: role
         });
-    }).post((req, res) => {
+    }).post(async (req, res) => {
         return res.redirect("/admin/products/add-product/step3");
     });
 
 router.route("/products/add-product/step3")
-    .get((req, res) => {
+    .get(async (req, res) => {
+        const loginStatus = await helperMethods.checkLoginStatus(req)
+        const role = await helperMethods.checkUserRole(req)
         return res.render("admin/addNewProduct_S3", {
-            docTitle: "Admin - Add Product - Step 3"
+            docTitle: "Admin - Add Product - Step 3",
+            isLoggedIn: loginStatus,
+            role: role
         });
     }).post(upload.single('coverImage'), async (req, res) => {
         let coverImage = "";

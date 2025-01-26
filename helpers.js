@@ -92,6 +92,10 @@ const checkLoginStatus = async (req) => {
 	return (req.session && req.session.user && req.session.user.userID ? true : false)
 }
 
+const checkUserRole = async (req) => {
+	return (req.session && req.session.user && req.session.user.role ? true : false)
+}
+
 const methods = {
 	configureDotEnv,
 	argumentProvidedValidation,
@@ -100,7 +104,8 @@ const methods = {
 	validateObjectID,
 	encyptValue,
 	decryptValue,
-	checkLoginStatus
+	checkLoginStatus,
+	checkUserRole
 };
 
 export default methods;

@@ -10,11 +10,13 @@ router.route('/')
         console.log(req.session)
         const products = await productData.searchProduct()
         const loginStatus = await helperMethods.checkLoginStatus(req)
+        const role = await helperMethods.checkUserRole(req)
         console.log(loginStatus)
         return res.render('user/product', {
             docTitle: 'Products',
             products: products,
-            isLoggedIn: loginStatus
+            isLoggedIn: loginStatus,
+            role: role
         })
     })
     .post(async (req, res) => {
@@ -50,22 +52,23 @@ router.route('/')
 router.route('/login')
     .get(async (req, res) => {
         const loginStatus = await helperMethods.checkLoginStatus(req)
-        console.log("Here",loginStatus)
+        const role = await helperMethods.checkUserRole(req)
         return res.render('user/login', {
             docTitle: 'Login',
-            isLoggedIn: loginStatus
+            isLoggedIn: loginStatus,
+            role: role
         })
     })
     .post(async (req, res) => {
         try {
-            const {emailAddress, password} = req.body
+            const { emailAddress, password } = req.body
             const userLoginRequest = await usersData.searchUser(emailAddress, password)
             try {
                 // console.log(userLoginRequest)
                 // helperMethods.primitiveTypeValidation(userLoginRequest, 'object')
                 req.session.user = userLoginRequest
                 // console.log(userLoginRequest)
-                if('role' in userLoginRequest) {
+                if ('role' in userLoginRequest) {
                     return res.redirect('/admin')
                 } else {
                     return res.redirect('/user')
@@ -74,17 +77,19 @@ router.route('/login')
                 console.log('incorrect username/password')
             }
         } catch (err) {
-            return res.json({error: err})
+            return res.json({ error: err })
         }
     })
 
 router.route('/signup')
     .get(async (req, res) => {
         const loginStatus = await helperMethods.checkLoginStatus(req)
+        const role = await helperMethods.checkUserRole(req)
         console.log(loginStatus)
         return res.render('user/signup', {
             docTitle: 'User Registration',
-            isLoggedIn: loginStatus
+            isLoggedIn: loginStatus,
+            role: role
         })
     })
     .post(async (req, res) => {
@@ -106,22 +111,29 @@ router.route('/product/:id')
 
 router.route('/cart')
     .get(async (req, res) => {
+        const loginStatus = await helperMethods.checkLoginStatus(req)
+        const role = await helperMethods.checkUserRole(req)
         return res.render('user/cart', {
-            docTitle: 'Cart'
+            docTitle: 'Cart',
+            isLoggedIn: loginStatus,
+            role: role
         })
     })
 
 router.route('/checkout')
     .get(async (req, res) => {
-        if(req.session.user) {
+        if (req.session.user) {
             console.log("I am here")
             try {
                 const userData = await usersData.preFillUserData(req.session.user.userID)
-                console.log(userData)
+                const loginStatus = await helperMethods.checkLoginStatus(req)
+                const role = await helperMethods.checkUserRole(req)
                 return res.render('user/cart', {
                     docTitle: 'Checkout',
                     checkout: true,
-                    userProfile: userData
+                    userProfile: userData,
+                    isLoggedIn: loginStatus,
+                    role: role
                 })
             } catch (err) {
                 console.error(err)
@@ -133,10 +145,10 @@ router.route('/checkout')
                 checkout: true
             })
         }
-        
+
     })
     .post(async (req, res) => {
-        console.log(req.body)
+
         // processing cart object first
         const cartItems = JSON.parse(req.body.cart)
         const cartObject = []
@@ -169,7 +181,6 @@ router.route('/checkout')
                 firstName, lastName, phoneNumber, emailAddress,
                 addressLine1, addressLine2, addressCity, addressState, addressZipCode, cartObject, userId
             )
-            console.log(order)
             return res.redirect('/user')
         } catch (err) {
             return res.status(404).json({ error: err })

@@ -13,6 +13,67 @@
 </head>
 
 <body>
+
+    {{#if role}}
+
+    <nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light">
+        <div class="container-fluid justify-content-center justify-content-md-between">
+            <a class="navbar-brand me-2 mb-1 d-flex justify-content-center" href="#">
+                <img src="/public/imgs/Logo.jpg" height="80" alt="EASE SF LOGO" loading="lazy" />
+            </a>
+
+            <ul class="navbar-nav flex-row">
+                {{!-- <li class="nav-item me-3 me-lg-0">
+                    <a class="nav-link" href="/user/cart">
+                        <i class="fas fa-shopping-cart"></i>
+                    </a>
+                </li> --}}
+                <li class="nav-item me-3 me-lg-0">
+                    <a class="nav-link" href="/admin/products">
+                        <span class="d-none d-lg-inline-block">Products</span>
+                        <i class="fas fa-shopping-bag d-inline-block d-lg-none"></i>
+                    </a>
+                </li>
+                <li class="nav-item me-3 me-lg-0">
+                    <a class="nav-link" href="/admin/category">
+                        <span class="d-none d-lg-inline-block">Category</span>
+                        <i class="fas fa-envelope d-inline-block d-lg-none"></i>
+                    </a>
+                </li>
+                <li class="nav-item me-3 me-lg-0">
+                    <a class="nav-link" href="/admin/orders">
+                        <span class="d-none d-lg-inline-block">Orders</span>
+                        <i class="fas fa-envelope d-inline-block d-lg-none"></i>
+                    </a>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdownMenuLink"
+                        role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-person-circle fs-6 me-2"></i> <span> <!--Combined Icon and text -->
+                            {{!-- {{#if isLoggedIn}}
+                            {{ user.name }}
+                            {{else}}
+                            Profile
+                            {{/if}} --}}
+                        </span>
+                    </a>
+
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
+                        {{#if isLoggedIn}}
+                        <li><a class="dropdown-item" href="/user/orders/{{user.id}}">Orders</a></li>
+                        <li><a class="dropdown-item" href="/user/logout">Logout</a></li>
+                        {{else}}
+                        <li><a class="dropdown-item" href="/user/login">Login</a></li>
+                        <li><a class="dropdown-item" href="/user/signup">SignUp</a></li>
+                        {{/if}}
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    {{else}}
     <nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light">
         <div class="container-fluid justify-content-center justify-content-md-between">
             <a class="navbar-brand me-2 mb-1 d-flex justify-content-center" href="#">
@@ -63,6 +124,8 @@
             </ul>
         </div>
     </nav>
+
+    {{/if}}
 
 
     {{{body}}}
