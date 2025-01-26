@@ -2,11 +2,14 @@
     <br>
 
     <form method="post">
-        <label for="product-name" class="form-label"></label>
-        <input type="text" name="productNameFilter" class="form-input">
+        <div class="form-group">
+            <label for="productNameFilter" class="form-label">Search</label>
+            <input type="text" name="productNameFilter" class="form-input">
+        </div>
         <input type="submit" value="Search">
         <br>
     </form>
+    <br>
     <div class="row" id="productContainer">
         {{#each products}}
         <div class="col-md-3 mb-4">
@@ -14,7 +17,7 @@
                 <img src="{{this.coverImage}}" class="card-img-top product-image" alt="{{this.name}}">
                 <div class="card-body">
                     <h5 class="card-title">{{this.name}}</h5>
-                    <p class="card-text">{{{this.description}}}</p>
+                    <p class="card-text"><strong>Category: </strong>{{truncateDescription this.category}}</p>
                     <div class="d-flex align-items-center justify-content-end">
                         <p class="card-text product-price">${{this.price}}</p>
                     </div>
@@ -41,3 +44,29 @@
     </div>
 </div>
 <script src="/public/js/script.js"></script>
+
+{{!-- <div class="container-fluid mt-4">
+    <div class="row">
+
+        {{#each products}}
+        <div class="col-md-4 mb-4">
+            <div class="card product-card">
+                <img src="{{this.coverImage}}" class="card-img-top product-image" alt="{{this.name}}">
+                <div class="card-body">
+                    <h5 class="card-title product-title">{{this.name}}</h5>
+                    <p class="card-text product-price">${{this.price}}</p>
+                    <p class="card-text product-description">
+                        {{{truncateDescription this.description}}} <a href="#" class="read-more-link"
+                            data-product-id="{{this._id}}">Read more</a>
+                    </p>
+                    <div class="add-to-cart-container">
+                        <button class="btn btn-primary add-to-cart-btn" data-product-id="{{this._id}}">Add to
+                            Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{/each}}
+
+    </div>
+</div> --}}

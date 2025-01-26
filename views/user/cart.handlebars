@@ -1,30 +1,35 @@
 {{#if checkout}}
 <div class="container">
-    <h1>Checkout</h1>
-
+    <h1 class="text-center">Checkout</h1>
+    <hr>
     <form id="checkout-form" method="POST">
-        <h2>Personal Information</h2>
+        <h2 class="text-center">Personal Information</h2>
         <div class="form-row">
-            <div class="form-group col-md-6">
+            <div class="form-group">
                 <label for="firstName">First Name</label>
-                <input type="text" class="form-control" id="firstName" required name="firstName" value={{userProfile.firstName}}>
+                <input type="text" class="form-control" id="firstName" required name="firstName"
+                    value={{userProfile.firstName}}>
             </div>
-            <div class="form-group col-md-6">
+            <div class="form-group">
                 <label for="lastName">Last Name</label>
-                <input type="text" class="form-control" id="lastName" required name="lastName" value={{userProfile.lastName}}>
+                <input type="text" class="form-control" id="lastName" required name="lastName"
+                    value={{userProfile.lastName}}>
             </div>
         </div>
         <div class="form-row">
-            <div class="form-group col-md-6">
+            <div class="form-group ">
                 <label for="phoneNumber">Phone Number</label>
-                <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber" value={{userProfile.phoneNumber}}>
+                <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber"
+                    value={{userProfile.phoneNumber}}>
             </div>
-            <div class="form-group col-md-6">
+            <div class="form-group ">
                 <label for="emailAddress">Email Address</label>
-                <input type="email" class="form-control" id="emailAddress" required name="emailAddress" value={{userProfile.emailAddress}}>
+                <input type="email" class="form-control" id="emailAddress" required name="emailAddress"
+                    value={{userProfile.emailAddress}}>
             </div>
         </div>
-        <h2>Delivery Information</h2>
+        <hr>
+        <h2 class="text-center">Delivery Information</h2>
         <div class="form-group">
             <label for="addressLine1">Address Line 1</label>
             <input type="text" class="form-control" id="addressLine1" required name="addressLine1">
@@ -34,29 +39,31 @@
             <input type="text" class="form-control" id="addressLine2" name="addressLine2">
         </div>
         <div class="form-row">
-            <div class="form-group col-md-4">
+            <div class="form-group ">
                 <label for="city">City</label>
                 <input type="text" class="form-control" id="city" required name="addressCity">
             </div>
-            <div class="form-group col-md-4">
+            <div class="form-group ">
                 <label for="state">State</label>
                 <select class="form-control" id="state" required name="addressState">
                     <option value="" disabled selected>Select a state</option>
                 </select>
             </div>
-            <div class="form-group col-md-4">
+            <div class="form-group ">
                 <label for="zipCode">ZIP Code</label>
                 <input type="text" class="form-control" id="zipCode" required name="addressZipCode">
             </div>
         </div>
 
-        <h2>Order Information</h2>
+        <hr>
+        <h2 class="text-center">Order Information</h2>
         <div class="row" id="order-items">
         </div>
-
-        <h2>Bill</h2>
-        <div id="bill-summary"></div>
-        <button type="submit" class="btn btn-primary">Place Order</button>
+        <hr>
+        <h2 class="text-center">Bill</h2>
+        <div id="bill-summary" class="justify-content-center"></div>
+        <br>    
+        <div class="text-center"><button type="submit" class="btn btn-primary">Place Order</button></div>
     </form>
 </div>
 <script src="/public/js/checkoutScript.js"></script>
@@ -86,7 +93,7 @@
 
             let cart = JSON.parse(sessionStorage.getItem('cart') || '{}');
 
-           
+
 
             formData.append('cart', JSON.stringify(cart))
             const response = await fetch('/user/checkout', {
@@ -102,6 +109,7 @@
 </script>
 {{else}}
 <div class="container">
+    <br>
     <h1>Your Shopping Cart</h1>
     <div class="row" id="cart-items">
         <!-- Cart items will be dynamically added here -->

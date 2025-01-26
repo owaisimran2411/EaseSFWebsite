@@ -108,11 +108,12 @@ document.addEventListener('DOMContentLoaded', function () {
                })
                const totalPriceWithTax = totalPrice * (1 + salesTax);
                billSummaryElement.innerHTML = `
-               <p>Total Items: ${totalItems}</p>
-               <p>Sub Total: $${totalPrice.toFixed(2)}</p>
-               <p>Sales Tax: ${salesTax * 100}%</p>
-               <p>Total Amount: $${totalPriceWithTax.toFixed(2)}</p>
+               <p><strong>Total Items</strong>: ${totalItems}</p>
+               <p><strong>Sub Total</strong>: $${totalPrice.toFixed(2)}</p>
+               <p><strong>Sales Tax</strong>: ${salesTax * 100}%</p>
+               <p><strong>Total Amount</strong>: $${totalPriceWithTax.toFixed(2)}</p>
             `
+            billSummaryElement.classList.add('bill-summary-after-effect')
             })
             .catch(error => {
                console.error("Failed to fetch order items", error)

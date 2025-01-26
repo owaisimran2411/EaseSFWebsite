@@ -51,9 +51,10 @@ document.addEventListener('DOMContentLoaded', function () {
                         cartItemsContainer.appendChild(card)
                     })
 
-                    cartTotalElement.textContent = `Total Items: ${totalItems}, Total Price: $${totalPrice.toFixed(2)}`
+                    cartTotalElement.innerHTML = `<strong>Total Item Count: </strong>${totalItems}<br> <strong>Total Price: </strong>$${totalPrice.toFixed(2)}`
+                    cartTotalElement.classList.add('text-right')
                     checkoutContainer.innerHTML = `
-               <a href='/user/checkout'><button class="btn btn-primary">Proceed to Checkout</button></a>
+               <br><a href='/user/checkout'><button class="btn btn-primary">Proceed to Checkout</button></a>
              `
                 })
                 .catch(error => {

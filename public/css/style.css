@@ -174,3 +174,11 @@ body {
 .cart-summary h2 {
   margin-bottom: 15px;
 }
+
+.bill-summary-after-effect {
+    padding: 20px 10px;
+    border: 2px solid silver;
+    padding-left: 40%;
+    border-radius: 1%;
+    align-items: right;
+}

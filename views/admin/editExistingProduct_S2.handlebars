@@ -70,7 +70,7 @@
             description: tinymce.get('description').getContent(),
             hashtags: document.getElementById('hashtags').value
         };
-        
+        console.log(updatedData)
         sessionStorage.setItem('productUpdateData', JSON.stringify(updatedData));
         
         window.location.href = `/admin/product/edit-product/step3/${existingData._id}`;

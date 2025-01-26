@@ -101,6 +101,13 @@ const handlebarsInstance = exphbs.create({
 		eq: function (a, b) {
 			return a === b;
 		},
+		truncateDescription: function (description) {
+			// console.log(description)
+			if (description.length > 100) {
+				return description.substring(0, 100) + '... Read more';
+			}
+			return description;
+		},
 		partialsDir: ["views/partials/"],
 	},
 });
