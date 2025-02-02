@@ -8,12 +8,12 @@ const router = Router();
 // Route goes here
 router.route('/')
     .get(async (req, res) => {
-        console.log(req.session)
+        // console.log(req.session)
         const products = await productData.searchProduct()
         const categories = await categoryData.searchCategories()
         const loginStatus = await helperMethods.checkLoginStatus(req)
         const role = await helperMethods.checkUserRole(req)
-        console.log(loginStatus)
+        // console.log(loginStatus)
         return res.render('user/product', {
             docTitle: 'Products',
             products: products,
@@ -24,9 +24,9 @@ router.route('/')
     })
     .post(async (req, res) => {
         let searchFilter = {}
-        if (req.body.productNameFilter !== '') {
+        if ('productNameFilter' in req.body && req.body.productNameFilter !== '') {
             searchFilter = { $regex: req.body.productNameFilter, $options: 'i' }
-        } 
+        }
         else {
             searchFilter = { $regex: '', $options: 'i' }
         }
@@ -39,18 +39,66 @@ router.route('/')
                 ]
             }
         )
-
+        const categories = await categoryData.searchCategories()
+        const loginStatus = await helperMethods.checkLoginStatus(req)
+        const role = await helperMethods.checkUserRole(req)
         if (products.length !== 0) {
             // console.log(products)
             return res.render('user/product', {
                 docTitle: 'Products',
-                products: products
+                products: products,
+                category: categories,
+                isLoggedIn: loginStatus,
+                role: role,
+
             })
         } else {
             return res.redirect('/user')
         }
 
     })
+
+router.route('/advance-filters').post(async (req, res) => {
+    let searchFilter = {}
+    let query = {}
+    if ('searchBox' in req.body && req.body.searchBox !== '') {
+        searchFilter = { $regex: req.body.searchBox, $options: 'i' }
+        query = {
+            $or: [
+                { name: searchFilter },
+                { description: searchFilter },
+                { hashtags: searchFilter },
+            ]
+        }
+    }
+
+
+    let products = await productData.searchProduct(
+        query
+    )
+    if (req.body.category != '*') {
+        const productsFilteredByCategory = products.filter(product => product.category == req.body.category)
+        products = productsFilteredByCategory;
+    }
+
+    return res.json(products)
+    const categories = await categoryData.searchCategories()
+    const loginStatus = await helperMethods.checkLoginStatus(req)
+    const role = await helperMethods.checkUserRole(req)
+    if (products.length !== 0) {
+        // console.log(products)
+        return res.render('user/product', {
+            docTitle: 'Products',
+            products: products,
+            category: categories,
+            isLoggedIn: loginStatus,
+            role: role,
+
+        })
+    } else {
+        return res.redirect('/user')
+    }
+})
 
 router.route('/login')
     .get(async (req, res) => {

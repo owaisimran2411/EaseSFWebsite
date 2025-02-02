@@ -1,10 +1,10 @@
 <div class="container">
     <br>
 
-    <form method="post">
+    <form method="post" id="search-product-form">
 
         <label for="productNameFilter" class="form-label">Search</label>
-        <input type="text" name="productNameFilter" class="form-input">
+        <input type="text" name="productNameFilter" class="form-input" id="searchFilterInput">
 
         <input type="submit" value="Search">
         <br>
@@ -63,31 +63,7 @@
     </div>
 </div>
 <script src="/public/js/script.js"></script>
-<script>
-    document.getElementById('filterCategory').addEventListener('change', (event)=> {
-        const filters = JSON.parse(sessionStorage.getItem('filters') || '{}');
-    
-        if("category" in filters) {
-            const filterData = {...filters, "category": event.target.value}
-            sessionStorage.setItem('filters', JSON.stringify(filterData))
-        } else {
-            const filters = {}
-            filters.category = event.target.value
-            sessionStorage.setItem('filters', JSON.stringify(filters))
-        }
-
-        fetch(`/user`, {
-            method: 'POST',
-            headers: {
-                'Content-type': 'application/json'
-            },
-            body: JSON.stringify(JSON.parse(sessionStorage.getItem('filters')))
-        }).then((res) => {
-            console.log(res)
-
-        })
-    })
-</script>
+<script src="/public/js/productSearch.js"></script>
 
 {{!-- <div class="container-fluid mt-4">
     <div class="row">
