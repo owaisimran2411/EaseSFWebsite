@@ -2,14 +2,33 @@
     <br>
 
     <form method="post">
-        <div class="form-group">
-            <label for="productNameFilter" class="form-label">Search</label>
-            <input type="text" name="productNameFilter" class="form-input">
-        </div>
+
+        <label for="productNameFilter" class="form-label">Search</label>
+        <input type="text" name="productNameFilter" class="form-input">
+
         <input type="submit" value="Search">
         <br>
     </form>
+
+    {{!-- filters section --}}
+    <section class="filters-section">
+        <br>
+        <h3>Advanced Filters</h3>
+        <div>
+            <div class="row">
+                <div class="col-md-3">
+                    <select name="filterCategory" id="filterCategory" class="form-input">
+                        <option value="*">Category</option>
+                        {{#each category}}
+                        <option value="{{this.name}}">{{this.name}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+            </div>
+        </div>
+    </section>
     <br>
+    <hr>
     <div class="row" id="productContainer">
         {{#each products}}
         <div class="col-md-3 mb-4">
@@ -44,6 +63,31 @@
     </div>
 </div>
 <script src="/public/js/script.js"></script>
+<script>
+    document.getElementById('filterCategory').addEventListener('change', (event)=> {
+        const filters = JSON.parse(sessionStorage.getItem('filters') || '{}');
+    
+        if("category" in filters) {
+            const filterData = {...filters, "category": event.target.value}
+            sessionStorage.setItem('filters', JSON.stringify(filterData))
+        } else {
+            const filters = {}
+            filters.category = event.target.value
+            sessionStorage.setItem('filters', JSON.stringify(filters))
+        }
+
+        fetch(`/user`, {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify(JSON.parse(sessionStorage.getItem('filters')))
+        }).then((res) => {
+            console.log(res)
+
+        })
+    })
+</script>
 
 {{!-- <div class="container-fluid mt-4">
     <div class="row">

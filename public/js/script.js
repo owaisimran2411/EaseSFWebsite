@@ -127,35 +127,39 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     };
 
-    table.addEventListener('click', function (event) {
-        if (event.target.classList.contains('edit-category')) {
-            const categoryId = event.target.getAttribute('data-category-id');
-            const categoryRow = event.target.closest('tr');
-            const categoryName = categoryRow.querySelector('td').textContent;
-            document.getElementById('edit-category-id').value = categoryId;
-            document.getElementById('edit-category-name').value = categoryName;
-            editCategoryModal.style.display = 'block';
-        } else if (event.target.classList.contains('delete-category')) {
-            const categoryId = event.target.getAttribute('data-category-id');
-            if (confirm("Are you sure you want to delete this category?")) {
-                fetch(`/categories/${categoryId}`, {
-                    method: 'DELETE'
-                })
-                    .then((res) => {
-                        if (res.ok) {
-                            window.location.reload();
-                        } else {
-                            throw new Error("Failed to delete the category")
-                        }
+    if (table) {
+        table.addEventListener('click', function (event) {
+            if (event.target.classList.contains('edit-category')) {
+                const categoryId = event.target.getAttribute('data-category-id');
+                const categoryRow = event.target.closest('tr');
+                const categoryName = categoryRow.querySelector('td').textContent;
+                document.getElementById('edit-category-id').value = categoryId;
+                document.getElementById('edit-category-name').value = categoryName;
+                editCategoryModal.style.display = 'block';
+            } else if (event.target.classList.contains('delete-category')) {
+                const categoryId = event.target.getAttribute('data-category-id');
+                if (confirm("Are you sure you want to delete this category?")) {
+                    fetch(`/categories/${categoryId}`, {
+                        method: 'DELETE'
                     })
-                    .catch((e) => console.log(e))
+                        .then((res) => {
+                            if (res.ok) {
+                                window.location.reload();
+                            } else {
+                                throw new Error("Failed to delete the category")
+                            }
+                        })
+                        .catch((e) => console.log(e))
+                }
             }
-        }
-    })
+        })
+    }
     const addCategoryBtn = document.querySelector('.add-category')
-    addCategoryBtn.addEventListener('click', (e) => {
-        addCategoryModal.style.display = 'block';
-    })
+    if(addCategoryBtn) {
+        addCategoryBtn.addEventListener('click', (e) => {
+            addCategoryModal.style.display = 'block';
+        })
+    }
 
     document.querySelector('.update-category').addEventListener('click', function () {
         const categoryId = document.getElementById('edit-category-id').value;

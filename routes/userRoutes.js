@@ -1,6 +1,7 @@
 import { Router } from "express";
 import helperMethods from "./../helpers.js";
-import { productData, ordersData, usersData } from "./../data/index.js";
+import { productData, ordersData, usersData, categoryData } from "./../data/index.js";
+import { category } from "../config/mongoCollections.js";
 
 const router = Router();
 
@@ -9,6 +10,7 @@ router.route('/')
     .get(async (req, res) => {
         console.log(req.session)
         const products = await productData.searchProduct()
+        const categories = await categoryData.searchCategories()
         const loginStatus = await helperMethods.checkLoginStatus(req)
         const role = await helperMethods.checkUserRole(req)
         console.log(loginStatus)
@@ -16,14 +18,16 @@ router.route('/')
             docTitle: 'Products',
             products: products,
             isLoggedIn: loginStatus,
-            role: role
+            role: role,
+            category: categories
         })
     })
     .post(async (req, res) => {
         let searchFilter = {}
         if (req.body.productNameFilter !== '') {
             searchFilter = { $regex: req.body.productNameFilter, $options: 'i' }
-        } else {
+        } 
+        else {
             searchFilter = { $regex: '', $options: 'i' }
         }
         const products = await productData.searchProduct(
@@ -31,9 +35,8 @@ router.route('/')
                 $or: [
                     { name: searchFilter },
                     { description: searchFilter },
-                    { hashtags: searchFilter }
+                    { hashtags: searchFilter },
                 ]
-                // hashtags: searchFilter
             }
         )
 
