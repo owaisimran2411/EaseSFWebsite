@@ -4,10 +4,9 @@ import helperMethods from "./../helpers.js";
 const searchOrders = async (searchParams) => {
     let queryParams = undefined;
     try {
-        helperMethods.argumentProvidedValidation(searchParams, "searchParams");
-        queryParams = searchParams;
-
-        queryParams = helperMethods.primitiveTypeValidation(queryParams, "queryParams", "object");
+        if(searchParams) {
+            queryParams = searchParams
+        }
 
     } catch (error) {
         queryParams = {};

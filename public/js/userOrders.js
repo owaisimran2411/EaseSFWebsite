@@ -10,8 +10,8 @@ document.addEventListener('DOMContentLoaded', () => {
             modalBody.style.display = 'block'
 
             const orderId = element.getAttribute('data-order-id')
-            
-            fetch(`/admin/orders/${orderId}`, {
+
+            fetch(`/user/orders/${orderId}`, {
                 method: 'GET'
             }).then(response => {
                 return response.json()

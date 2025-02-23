@@ -174,7 +174,6 @@ router.route('/cart')
 router.route('/checkout')
     .get(async (req, res) => {
         if (req.session.user) {
-            console.log("I am here")
             try {
                 const userData = await usersData.preFillUserData(req.session.user.userID)
                 const loginStatus = await helperMethods.checkLoginStatus(req)
@@ -227,14 +226,51 @@ router.route('/checkout')
             const addressCity = req.body.city
             const addressState = req.body.state
             const addressZipCode = req.body.zipCode
-            const userId = req.body.userID || 'null'
+            helperMethods.configureDotEnv()
+            const userId = await helperMethods.decryptValue(req.session.user.userID, process.env.ENCRYPTION_KEY)
             const order = await ordersData.createOrder(
                 firstName, lastName, phoneNumber, emailAddress,
                 addressLine1, addressLine2, addressCity, addressState, addressZipCode, cartObject, userId
             )
-            return res.redirect('/user')
+            console.log("i am about to perform res.redirect method call")
+            return res.redirect('/')
         } catch (err) {
             return res.status(404).json({ error: err })
+        }
+    })
+
+router.route('/orders')
+    .get(async (req, res) => {
+        if (req.session && req.session.user && req.session.user.userID) {
+            try {
+                const loginStatus = await helperMethods.checkLoginStatus(req)
+                const role = await helperMethods.checkUserRole(req)
+                helperMethods.configureDotEnv()
+                const userId = await helperMethods.decryptValue(req.session.user.userID, process.env.ENCRYPTION_KEY)
+                const orderData = await ordersData.searchOrders({ userID: userId })
+                console.log(orderData)
+                return res.render('user/orderHistory', {
+                    docTitle: 'Orders',
+                    orders: orderData,
+                    isLoggedIn: loginStatus,
+                    role: role
+                })
+            } catch (err) {
+                console.error(err)
+                return
+            }
+        } else {
+            return res.redirect("/user/login")
+        }
+    })
+
+router.route('/orders/:id')
+    .get(async (req, res) => {
+        try {
+            const orderData = await ordersData.searchOrders({ _id: req.params.id })
+            return res.json(orderData)
+        } catch (err) {
+            console.error(err)
         }
     })
 export default router;
