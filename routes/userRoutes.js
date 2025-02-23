@@ -264,6 +264,11 @@ router.route('/orders')
         }
     })
 
+router.route('/orders/review/:id')
+    .post(async (req, res) => {
+        console.log(req.body)
+    })
+
 router.route('/orders/:id')
     .get(async (req, res) => {
         try {
@@ -273,4 +278,5 @@ router.route('/orders/:id')
             console.error(err)
         }
     })
+
 export default router;

@@ -11,14 +11,15 @@
         </thead>
         <tbody id="order-table-body">
             {{#each orders}}
-                <tr>
-                    {{!-- <td>{{this.firstName}} {{this.lastName}}</td> --}}
-                    <td></td>
-                    <td>{{this.orderDate}}</td>
-                    <td>
-                        <button id='' class="btn-primary view-order-details" data-order-id="{{this._id}}">View details</button>
-                    </td>
-                </tr>
+            <tr>
+                {{!-- <td>{{this.firstName}} {{this.lastName}}</td> --}}
+                <td></td>
+                <td>{{this.orderDate}}</td>
+                <td>
+                    <button id='' class="btn-primary view-order-details" data-order-id="{{this._id}}">View
+                        details</button>
+                </td>
+            </tr>
             {{/each}}
         </tbody>
     </table>

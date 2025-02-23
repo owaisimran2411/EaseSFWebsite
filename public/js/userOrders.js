@@ -39,6 +39,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 </ul>
     
                 <p><strong>Total Bill Amount:</strong> $${totalBill}</p>
+                
+                <hr>
+                <form action="/user/orders/review/${orderId}" method="post">
+                    <textarea name="orderReview" id="orderReview" placeholder="Enter your review" class="form-control" ></textarea>
+                    <br>
+                    <button type="submit" class='btn btn-success'>Submit Review</button>
+                </form>
     
                 
                 
