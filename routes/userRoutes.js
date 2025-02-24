@@ -1,6 +1,6 @@
 import { Router } from "express";
 import helperMethods from "./../helpers.js";
-import { productData, ordersData, usersData, categoryData } from "./../data/index.js";
+import { productData, ordersData, usersData, categoryData, reviewsData } from "./../data/index.js";
 import { category } from "../config/mongoCollections.js";
 
 const router = Router();
@@ -266,7 +266,17 @@ router.route('/orders')
 
 router.route('/orders/review/:id')
     .post(async (req, res) => {
-        console.log(req.body)
+        try {
+            if (req.body && req.session && req.session.user && req.session.user.userID) {
+                helperMethods.configureDotEnv()
+                const decryptUserID = await helperMethods.decryptValue(req.session.user.userID, process.env.ENCRYPTION_KEY)
+                const reviewData = await reviewsData.createReview(req.body.orderReview, decryptUserID, req.params.id)
+                return res.redirect('/user/orders')
+            }
+        }
+        catch (err) {
+            res.json({ error: err })
+        }
     })
 
 router.route('/orders/:id')
