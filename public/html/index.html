@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="../css/app.css">
+    <title>Document</title>
+</head>
+<body>
+    <ul class="my_nav">
+        <div class="nav_logo">
+            <img src="../imgs/Logo.png" alt="Logo">
+        </div>
+        <li><a class="active" href="#">Home</a></li>
+        <li><a href="products.html">Products</a></li>
+        <li><a href="#">About</a></li>
+        <div class="to_right">
+        <li><a href="#"><i class="fa-solid fa-circle-user"></i></a></li>
+        <li><a href="cart.html"><i class="fa-solid fa-cart-shopping"></i></a></li>
+        </div>
+        <div class="menu-toggle" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </ul>
+    <div class="first_section">
+        <a class="loc_info" href="#"><i class="fa-solid fa-location-dot"></i> Please set Delivery Address</a>
+    </div>
+    <div class="first_container">
+        <div class="landing_section">
+            <h1>Your One-Stop Shop for Everything</h1>
+            <h3>Discover deals that spark your day,Shop now—don't let them slip away!</h3>
+            <a href="#" class="my_btn">Explore our Products</a>
+        </div>
+    </div>
+    <div class="my_footer">
+        <p class="copyright_content"><i class="fa-solid fa-copyright"></i> All rights reserved 2025</p>
+    </div>
+</body>
+<script>
+    function toggleMenu() {
+        document.querySelector('.my_nav').classList.toggle('active');
+    }
+</script>
+</html>
