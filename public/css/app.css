@@ -103,6 +103,10 @@ li .active{
     line-height: 1.6;
 }
 
+.landing_section h3{
+  margin-top: 25px;
+}
+
 .my_btn{
     margin-top: 20px;
     display: inline-block;
