@@ -44,7 +44,7 @@ router.route('/')
         const role = await helperMethods.checkUserRole(req)
         if (products.length !== 0) {
             // console.log(products)
-            return res.render('user/product', {
+            return res.render('user/mainProductPageNew', {
                 docTitle: 'Products',
                 products: products,
                 category: categories,
@@ -87,7 +87,7 @@ router.route('/advance-filters').post(async (req, res) => {
     const role = await helperMethods.checkUserRole(req)
     if (products.length !== 0) {
         // console.log(products)
-        return res.render('user/product', {
+        return res.render('user/mainProductPageNew', {
             docTitle: 'Products',
             products: products,
             category: categories,
@@ -157,7 +157,11 @@ router.route('/signup')
 router.route('/product/:id')
     .get(async (req, res) => {
         const product = await productData.searchProduct({ _id: req.params.id })
-        return res.json(product[0])
+        return res.render('user/productDetailsPageNew', {
+            docTitle: 'Product Details',
+            product: product[0]
+        })
+        // return res.json(product[0])
     })
 
 router.route('/cart')

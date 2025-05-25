@@ -11,35 +11,47 @@
         integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="/public/css/app.css">
-    <title>Document</title>
+    <title>{{docTitle}}</title>
 </head>
 
 <body>
     <nav>
         <ul class="my_nav">
-        <div class="nav_logo">
-            <img src="/public/imgs/Logo.png" alt="Logo">
-        </div>
-        <li><a href="/">Home</a></li>
-        <li><a href="/user">Products</a></li>
-        <li><a href="about.html">About</a></li>
-        <div class="to_right">
-        <li><a href="#"><i class="fa-solid fa-circle-user"></i></a></li>
-        <li><a href="/user/cart"><i class="fa-solid fa-cart-shopping"></i></a></li>
-        </div>
-        <div class="menu-toggle" onclick="toggleMenu()">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-    </ul>
+            <div class="nav_logo">
+                <img src="/public/imgs/Logo.png" alt="Logo">
+            </div>
+            <li><a href="/">Home</a></li>
+            <li><a href="/user">Products</a></li>
+            <li><a href="about.html">About</a></li>
+            <div class="to_right">
+                <li><a href="#"><i class="fa-solid fa-circle-user"></i></a></li>
+                <li><a href="/user/cart"><i class="fa-solid fa-cart-shopping"></i></a></li>
+            </div>
+            <div class="menu-toggle" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </ul>
     </nav>
     {{{body}}}
+
+
+    <script src="/public/js/frontend.js"></script>
+    <script src="/public/js/cart.js"></script>
+
+    <script>
+        function toggleMenu() {
+            document.querySelector('.my_nav').classList.toggle('active');
+        }
+    </script>
+    <footer>
+        <div class="my_footer">
+            <p class="copyright_content"><i class="fa-solid fa-copyright"></i> All rights reserved 2025</p>
+        </div>
+    </footer>
 </body>
 
 
-
-<script src="/public/js/frontend.js"></script>
-<script src="/public/js/cart.js"></script>
 
 </html>

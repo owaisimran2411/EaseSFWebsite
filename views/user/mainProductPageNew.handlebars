@@ -1,27 +1,30 @@
-<body>
+
 
     <div class="product_headings">
         <h1 class="main_head">Our Products</h1>
     </div>
     <!-- Search Bar -->
     <div class="search_bar">
-        <input type="text" id="searchInput" placeholder="Search products...">
-        <button><i class="fa fa-search"></i></button>
+        <form method="post" id="search-product-form">
+            <label for="productNameFilter" class="form-label" />
+            <input type="text" id="searchFilterInput" placeholder="Search products..." name="productNameFilter">
+            <button type=""><i class="fa fa-search"></i></button>
+        </form>
     </div>
 
     <section class="product_gallery">
         {{!-- loop automatically --}}
 
         {{#each products}}
-        <div class="product_card">
-            <img src="/public//imgs/panadol-500mg-tablets.webp" alt="Product 1">
-            <h3>{{this.name}}</h3>
+        <div class="product_card" data-product-id="{{this._id}}">
+            <img src="/public/imgs/panadol-500mg-tablets.webp" alt="Product 1">
+            <a href="/user/product/{{this._id}}"><h3>{{this.name}}</h3></a>
             <p>${{this.price}}</p>
             <p class="card-text"><strong>Category: </strong>{{truncateDescription this.category}}</p>
             <br>
-            
+
             <button class="add-to-cart">
-                 Buy Now
+                Buy Now
             </button>
         </div>
         {{/each}}
@@ -70,12 +73,8 @@
         </div> --}}
         <!-- Add more product_card divs as needed -->
     </section>
-    <div class="my_footer">
-        <p class="copyright_content"><i class="fa-solid fa-copyright"></i> All rights reserved 2025</p>
-    </div>
-</body>
-<script>
-    function toggleMenu() {
-        document.querySelector('.my_nav').classList.toggle('active');
-    }
+    
+
+<script src="/public/js/productSearch.js"></script>
+
 </script>

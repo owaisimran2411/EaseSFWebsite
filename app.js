@@ -44,7 +44,7 @@ app.use('/', async (req, res, next) => {
 		} else if (req.session.user) {
 			return res.redirect('/user')
 		} else {
-			return res.redirect('/user/login')
+			return res.redirect('/home')
 		}
 	} else {
 		next()
