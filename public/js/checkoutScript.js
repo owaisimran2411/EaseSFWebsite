@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function () {
          orderItemsContainer.innerHTML = "<p>Your cart is empty</p>"
       } else {
          Promise.all(productIds.map(productId => {
-            return fetch(`/user/product/${productId}`)
+            return fetch(`/user/product/get/${productId}`)
                .then(response => {
                   if (!response.ok) {
                      throw new Error(`HTTP Error ${response.status}`)
