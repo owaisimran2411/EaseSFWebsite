@@ -72,10 +72,12 @@ document.addEventListener('DOMContentLoaded', function () {
    function renderOrderSummary(salesTax = SALES_TAX_RATE) {
       orderItemsContainer.innerHTML = ''; // Clear previous items
       const productIds = Object.keys(cart);
+
       if (productIds.length === 0) {
          orderItemsContainer.innerHTML = "<p>Your cart is empty</p>"
       } else {
          Promise.all(productIds.map(productId => {
+
             return fetch(`/user/product/get/${productId}`)
                .then(response => {
                   if (!response.ok) {
@@ -88,21 +90,17 @@ document.addEventListener('DOMContentLoaded', function () {
                let totalItems = 0;
                let totalPrice = 0;
                products.forEach((product) => {
-                  const quantity = cart[product._id];
+                  const quantity = cart[product._id].quantity;
                   const itemTotal = quantity * product.price;
                   totalItems += quantity;
                   totalPrice += itemTotal;
                   const card = document.createElement('div');
-                  card.classList.add('col-md-3', 'mb-4')
+                  card.classList.add('product_card', 'col-md-3')
                   card.innerHTML = `
-                        <div class="card product-card" data-product-id="${product._id}">
-                           <img src="${product.coverImage}" class="card-img-top product-image" alt="${product.name}">
-                           <div class="card-body">
-                              <h5 class="card-title">${product.name}</h5>
-                                 <p class="card-text">Price: $${product.price}</p>
-                                 <p>Quantity: ${quantity}</p>
-                           </div>
-                        </div>
+                     <img src="${product.coverImage}" alt="${product.name}">
+                     <h3> ${ product.name} </h3>
+                     <p> ${ product.price } </p>
+                     <br>
                   `
                   orderItemsContainer.appendChild(card)
                })
@@ -113,7 +111,7 @@ document.addEventListener('DOMContentLoaded', function () {
                <p><strong>Sales Tax</strong>: ${salesTax * 100}%</p>
                <p><strong>Total Amount</strong>: $${totalPriceWithTax.toFixed(2)}</p>
             `
-            billSummaryElement.classList.add('bill-summary-after-effect')
+               billSummaryElement.classList.add('bill-summary-after-effect')
             })
             .catch(error => {
                console.error("Failed to fetch order items", error)
@@ -199,46 +197,46 @@ document.addEventListener('DOMContentLoaded', function () {
 
    // checkoutForm.addEventListener('submit', async (e) => {
 
-      // const formData = {
-      //    firstName: document.getElementById('firstName').value,
-      //    lastName: document.getElementById('lastName').value,
-      //    phoneNumber: document.getElementById('phoneNumber').value,
-      //    emailAddress: document.getElementById('emailAddress').value,
-      //    addressLine1: document.getElementById('addressLine1').value,
-      //    addressLine2: document.getElementById('addressLine2').value,
-      //    city: document.getElementById('city').value,
-      //    state: document.getElementById('state').value,
-      //    zipCode: document.getElementById('zipCode').value,
-      //    cart: [] // Initialize cart as empty array
-      // };
+   // const formData = {
+   //    firstName: document.getElementById('firstName').value,
+   //    lastName: document.getElementById('lastName').value,
+   //    phoneNumber: document.getElementById('phoneNumber').value,
+   //    emailAddress: document.getElementById('emailAddress').value,
+   //    addressLine1: document.getElementById('addressLine1').value,
+   //    addressLine2: document.getElementById('addressLine2').value,
+   //    city: document.getElementById('city').value,
+   //    state: document.getElementById('state').value,
+   //    zipCode: document.getElementById('zipCode').value,
+   //    cart: [] // Initialize cart as empty array
+   // };
 
-      // let totalAmount = 0;
-      // if (Object.keys(cart).length > 0) {
-      //    const products = await Promise.all(Object.keys(cart).map(productId => {
-      //       return fetch(`/user/product/${productId}`)
-      //          .then(response => {
-      //             if (!response.ok) {
-      //                throw new Error(`HTTP Error ${response.status}`)
-      //             }
-      //             return response.json()
-      //          })
-      //    }))
+   // let totalAmount = 0;
+   // if (Object.keys(cart).length > 0) {
+   //    const products = await Promise.all(Object.keys(cart).map(productId => {
+   //       return fetch(`/user/product/${productId}`)
+   //          .then(response => {
+   //             if (!response.ok) {
+   //                throw new Error(`HTTP Error ${response.status}`)
+   //             }
+   //             return response.json()
+   //          })
+   //    }))
 
-      //    products.forEach((product) => {
-      //       const cartItem = {
-      //          product_id: product._id,
-      //          product_quantity: cart[product._id],
-      //          product_unit_price: product.price,
-      //       }
-      //       formData.cart.push(cartItem);
-      //       totalAmount += product.price * cart[product._id];
-      //    })
-      //    totalAmount = totalAmount * (1 + SALES_TAX_RATE)
+   //    products.forEach((product) => {
+   //       const cartItem = {
+   //          product_id: product._id,
+   //          product_quantity: cart[product._id],
+   //          product_unit_price: product.price,
+   //       }
+   //       formData.cart.push(cartItem);
+   //       totalAmount += product.price * cart[product._id];
+   //    })
+   //    totalAmount = totalAmount * (1 + SALES_TAX_RATE)
 
-      // }
-      // persistFormData(formData);
-      // persistCartData(cart, totalAmount);
-      // await processPayment(totalAmount, e)
+   // }
+   // persistFormData(formData);
+   // persistCartData(cart, totalAmount);
+   // await processPayment(totalAmount, e)
    // })
    const storedFormData = retrieveFormData()
    const storedCartData = retrieveCartData();
