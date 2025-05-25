@@ -18,7 +18,7 @@ function toggleNav(icon) {
 }
 
 // Cart logic
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
+let cart = JSON.parse(sessionStorage.getItem("cart")) || [];
 
 function addToCart(product) {
   const existingIndex = cart.findIndex(item => item.name === product.name);
@@ -27,8 +27,8 @@ function addToCart(product) {
   } else {
     cart.push({ ...product, quantity: 1 });
   }
-  localStorage.setItem("cart", JSON.stringify(cart));
-  alert(`${product.name} added to cart!`);
+  sessionStorage.setItem("cart", JSON.stringify(cart));
+  // alert(`${product.name} added to cart!`);
 }
 
 // Add event listeners for all buy buttons

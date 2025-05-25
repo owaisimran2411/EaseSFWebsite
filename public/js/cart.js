@@ -1,7 +1,7 @@
 (function() {
   const cartItemsContainer = document.getElementById("cartItems");
   const cartTotal = document.getElementById("cartTotal");
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  let cart = JSON.parse(sessionStorage.getItem("cart")) || [];
 
   function updateCartUI() {
       cartItemsContainer.innerHTML = "";
@@ -14,7 +14,7 @@
                   <img src="${item.image}" alt="${item.name}">
                   <div class="info">
                       <h3>${item.name}</h3>
-                      <p>Rs. ${item.price} × ${item.quantity}</p>
+                      <p>$ ${item.price} × ${item.quantity}</p>
                       <div class="qty_buttons">
                           <button onclick="updateQty(${index}, -1)">-</button>
                           <span>${item.quantity}</span>
@@ -25,7 +25,7 @@
               </div>`;
       });
 
-      cartTotal.innerText = `Rs. ${total.toFixed(2)}`;
+      cartTotal.innerText = `$ ${total.toFixed(2)}`;
   }
 
   window.updateQty = function(index, change) {

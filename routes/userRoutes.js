@@ -14,7 +14,7 @@ router.route('/')
         const loginStatus = await helperMethods.checkLoginStatus(req)
         const role = await helperMethods.checkUserRole(req)
         // console.log(loginStatus)
-        return res.render('user/product', {
+        return res.render('user/mainProductPageNew', {
             docTitle: 'Products',
             products: products,
             isLoggedIn: loginStatus,
@@ -164,7 +164,7 @@ router.route('/cart')
     .get(async (req, res) => {
         const loginStatus = await helperMethods.checkLoginStatus(req)
         const role = await helperMethods.checkUserRole(req)
-        return res.render('user/cart', {
+        return res.render('user/userCartNew', {
             docTitle: 'Cart',
             isLoggedIn: loginStatus,
             role: role
