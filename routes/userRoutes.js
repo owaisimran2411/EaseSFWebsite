@@ -154,6 +154,13 @@ router.route('/signup')
         }
     })
 
+router.route('/product/get/:id')
+    .get(async (req, res) => {
+        const product = await productData.searchProduct({ _id: req.params.id })
+        console.log(req.params.id)
+        return res.json(product[0])
+    })
+
 router.route('/product/:id')
     .get(async (req, res) => {
         const product = await productData.searchProduct({ _id: req.params.id })
