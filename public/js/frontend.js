@@ -2,15 +2,6 @@
 const searchInput = document.getElementById('searchInput');
 const productCards = document.querySelectorAll('.product_card');
 
-searchInput.addEventListener('input', () => {
-  const value = searchInput.value.toLowerCase();
-
-  productCards.forEach(card => {
-    const title = card.querySelector('h3').textContent.toLowerCase();
-    card.style.display = title.includes(value) ? 'block' : 'none';
-  });
-});
-
 // Nav toggle (if you have a mobile nav toggle)
 function toggleNav(icon) {
   icon.classList.toggle("active");
@@ -33,7 +24,7 @@ function addToCart(product) {
 
 // Add event listeners for all buy buttons
 document.querySelectorAll(".add-to-cart, .buy_btn").forEach(button => {
-  button.addEventListener("click", function(e) {
+  button.addEventListener("click", function (e) {
     e.preventDefault();
 
     const card = this.closest(".product_card");
@@ -41,20 +32,23 @@ document.querySelectorAll(".add-to-cart, .buy_btn").forEach(button => {
     const priceText = card.querySelector("p").innerText.trim();
     const image = card.querySelector("img").src;
     const price = parseFloat(priceText.replace(/[^0-9.]/g, ''));
+    const id = card.getAttribute('data-product-id')
 
-    if (!name || !price || !image) {
+    if (!name || !price || !image || !id) {
       alert("Product info missing");
       return;
     }
 
-    addToCart({ name, price, image });
+    addToCart({ name, price, image, id });
   });
 });
 
 const hamburger = document.getElementById('hamburger');
 const navMenu = document.querySelector('.my_nav');
 
-hamburger.addEventListener('click', () => {
-  hamburger.classList.toggle('active');
-  navMenu.classList.toggle('active');
-});
+if (hamburger) {
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('active');
+    navMenu.classList.toggle('active');
+  });
+}
